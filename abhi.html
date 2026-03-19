@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTapPrint - Fleet Command (Bilaspur)</title>
+    
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet CSS for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Map styling */
+        .leaflet-container {
+            font-family: 'Inter', sans-serif;
+            z-index: 10;
+        }
+
+        /* Custom Map Markers */
+        .custom-marker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .marker-pin {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .marker-active { border-color: #10b981; }
+        .marker-inactive { border-color: #ef4444; }
+        .marker-warning { border-color: #f59e0b; }
+        
+        /* Pulse effect for inactive/warning markers */
+        .pulse {
+            position: absolute;
+            top: -6px; left: -6px; right: -6px; bottom: -6px;
+            border-radius: 50%;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .pulse-red { background-color: rgba(239, 68, 68, 0.4); }
+        .pulse-yellow { background-color: rgba(245, 158, 11, 0.4); }
+
+        @keyframes ping {
+            75%, 100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar-fill {
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Sidebar Item Selection */
+        .sidebar-item { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar-item:hover { background-color: #f8fafc; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.02); cursor: pointer; }
+        .sidebar-item.selected { background: linear-gradient(to right, #eff6ff, #ffffff); border-left: 4px solid #3b82f6; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1); }
+
+        /* Fancy Progress Bars */
+        .bg-gradient-blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .bg-gradient-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .bg-gradient-yellow { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-lg z-20 flex-none border-b border-slate-700">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-2.5 rounded-xl shadow-inner border border-blue-400/30">
+                        <i data-lucide="printer" class="w-6 h-6 text-white drop-shadow-md"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">OneTapPrint</h1>
+                        <p class="text-[10px] text-blue-300 font-bold tracking-wider uppercase">Fleet Command Center</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-slate-300 bg-slate-800 px-3 py-1.5 rounded-full">
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+                        <span id="system-status">System Online</span>
+                    </div>
+                    <button class="text-slate-300 hover:text-white transition">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-slate-300 hover:text-white transition">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar (Kiosk List) -->
+        <aside class="w-80 bg-white border-r border-slate-200 flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/80 backdrop-blur-sm">
+                <h2 class="font-semibold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="map-pin" class="w-4.5 h-4.5 text-blue-500"></i>
+                    Bilaspur Fleet
+                </h2>
+                <span class="text-xs font-bold bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full shadow-sm" id="kiosk-count">0</span>
+            </div>
+            
+            <div class="p-3 bg-white">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+                    <input type="text" placeholder="Search kiosks..." class="w-full pl-9 pr-3 py-2 bg-slate-100 border-transparent rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition outline-none">
+                </div>
+            </div>
+
+            <div id="kiosk-list" class="flex-1 overflow-y-auto px-2 pb-4 space-y-1">
+                <!-- Kiosks injected via JS -->
+            </div>
+        </aside>
+
+        <!-- Middle (Map Area) -->
+        <main class="flex-1 relative bg-slate-100">
+            <div id="map" class="absolute inset-0"></div>
+        </main>
+
+        <!-- Right Sidebar (Details Panel) -->
+        <aside class="w-96 bg-white border-l border-slate-200 flex flex-col z-20 shadow-[-4px_0_24px_rgba(0,0,0,0.02)] transform transition-transform duration-300" id="detail-panel">
+            
+            <!-- Default State (Nothing Selected) -->
+            <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-slate-400 p-8 text-center h-full bg-gradient-to-b from-transparent to-slate-50">
+                <div class="bg-blue-50 p-5 rounded-full mb-5 shadow-inner border border-blue-100">
+                    <i data-lucide="mouse-pointer-click" class="w-10 h-10 text-blue-400 drop-shadow-sm"></i>
+                </div>
+                <h3 class="font-bold text-slate-700 mb-2 text-lg">No Kiosk Selected</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">Select a printer from the map or the fleet list to view live telemetry and diagnostics.</p>
+            </div>
+
+            <!-- Active Kiosk Details -->
+            <div id="kiosk-details" class="hidden flex-col h-full">
+                <!-- Header -->
+                <div class="p-5 border-b border-slate-100 relative">
+                    <div class="flex justify-between items-start mb-1">
+                        <span id="det-id" class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">OTP-000</span>
+                        <span id="det-status" class="text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-current"></span> Active
+                        </span>
+                    </div>
+                    <h2 id="det-name" class="text-xl font-bold text-slate-800 mt-2">Kiosk Name</h2>
+                    <p id="det-address" class="text-sm text-slate-500 mt-1 flex items-start gap-1">
+                        <i data-lucide="map" class="w-4 h-4 mt-0.5 flex-none"></i>
+                        <span>Address goes here</span>
+                    </p>
+                </div>
+
+                <!-- Telemetry Body -->
+                <div class="p-5 flex-1 overflow-y-auto">
+                    
+                    <!-- Alerts Section -->
+                    <div id="alert-container" class="hidden mb-6 p-4 rounded-lg border-l-4 shadow-sm">
+                        <div class="flex gap-3">
+                            <i data-lucide="alert-triangle" id="alert-icon" class="w-5 h-5 flex-none"></i>
+                            <div>
+                                <h4 id="alert-title" class="text-sm font-bold">System Alert</h4>
+                                <p id="alert-msg" class="text-sm mt-0.5"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Consumables</h3>
+
+                    <!-- Paper Level -->
+                    <div class="mb-5">
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i> Paper Tray
+                            </label>
+                            <span id="det-paper-text" class="text-sm font-bold text-slate-700">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                            <div id="det-paper-bar" class="progress-bar-fill h-2.5 rounded-full bg-blue-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Ink Level -->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                <i data-lucide="droplet" class="w-4 h-4 text-slate-400"></i> CMYK Ink Tank
+                            </label>
+                            <span id="det-ink-text" class="text-sm font-bold text-slate-700">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                            <div id="det-ink-bar" class="progress-bar-fill h-2.5 rounded-full bg-blue-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-5 mt-2">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Hardware Info</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                <p class="text-xs text-slate-500 mb-1">Last Ping</p>
+                                <p class="text-sm font-semibold text-slate-800" id="det-ping">Just now</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                <p class="text-xs text-slate-500 mb-1">Jobs Today</p>
+                                <p class="text-sm font-semibold text-slate-800" id="det-jobs">142</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="p-4 border-t border-slate-200 bg-slate-50 flex gap-2">
+                    <button class="flex-1 bg-white border border-slate-300 text-slate-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-slate-50 transition shadow-sm flex justify-center items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Test Ping
+                    </button>
+                    <button id="dispatch-btn" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition shadow-sm flex justify-center items-center gap-2">
+                        <i data-lucide="wrench" class="w-4 h-4"></i> Dispatch
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- DUMMY DATA (Bilaspur Specific) ---
+        const kioskData = [
+            {
+                id: "OTP-101",
+                name: "GGU Central Library",
+                address: "Guru Ghasidas Vishwavidyalaya, Koni, Bilaspur",
+                coords: [22.1293, 82.1360],
+                status: "active",
+                paper: 78,
+                ink: 62,
+                alertLevel: "none", // none, warning, critical
+                alertMsg: "",
+                jobs: 312,
+                lastPing: "Just now"
+            },
+            {
+                id: "OTP-102",
+                name: "Apollo Hospital Lobby",
+                address: "Apollo Hospitals, Seepat Road, Bilaspur",
+                coords: [22.0945, 82.1730],
+                status: "inactive",
+                paper: 100,
+                ink: 100,
+                alertLevel: "critical",
+                alertMsg: "Network Offline. Connection lost 45 mins ago.",
+                jobs: 14,
+                lastPing: "45 mins ago"
+            },
+            {
+                id: "OTP-103",
+                name: "City Mall 36",
+                address: "City Mall 36, Mangla Chowk, Bilaspur",
+                coords: [22.0712, 82.1705],
+                status: "active",
+                paper: 12,
+                ink: 45,
+                alertLevel: "warning",
+                alertMsg: "Low Paper Warning. Refill required soon.",
+                jobs: 89,
+                lastPing: "2 mins ago"
+            },
+            {
+                id: "OTP-104",
+                name: "Bilaspur Railway Station",
+                address: "Platform No. 1 Waiting Area, Bilaspur Junction",
+                coords: [22.0674, 82.1558],
+                status: "inactive",
+                paper: 40,
+                ink: 30,
+                alertLevel: "critical",
+                alertMsg: "Hardware Tamper Detected! Tray 2 forced open.",
+                jobs: 102,
+                lastPing: "1 min ago"
+            },
+            {
+                id: "OTP-105",
+                name: "High Court Bar Room",
+                address: "High Court of Chhattisgarh, Bodri, Bilaspur",
+                coords: [22.0298, 82.1408],
+                status: "active",
+                paper: 90,
+                ink: 8,
+                alertLevel: "warning",
+                alertMsg: "Cyan Ink critically low.",
+                jobs: 215,
+                lastPing: "Just now"
+            },
+            {
+                id: "OTP-106",
+                name: "CMD PG College",
+                address: "CMD Post Graduate College, Link Road, Bilaspur",
+                coords: [22.0780, 82.1450],
+                status: "active",
+                paper: 55,
+                ink: 70,
+                alertLevel: "none",
+                alertMsg: "",
+                jobs: 450,
+                lastPing: "5 mins ago"
+            },
+            {
+                id: "OTP-107",
+                name: "GGV IT Building",
+                address: "Institute of Technology, GGV Campus, Koni, Bilaspur",
+                coords: [22.1325, 82.1380],
+                status: "active",
+                paper: 45,
+                ink: 88,
+                alertLevel: "none",
+                alertMsg: "",
+                jobs: 156,
+                lastPing: "Just now"
+            },
+            {
+                id: "OTP-108",
+                name: "GGV Student Cafeteria",
+                address: "Main Cafeteria, GGV Campus, Koni, Bilaspur",
+                coords: [22.1275, 82.1345],
+                status: "inactive",
+                paper: 0,
+                ink: 34,
+                alertLevel: "critical",
+                alertMsg: "Paper tray empty. Requires immediate refill.",
+                jobs: 42,
+                lastPing: "10 mins ago"
+            },
+            {
+                id: "OTP-109",
+                name: "DP Vipra College",
+                address: "Old High Court Road, Bilaspur",
+                coords: [22.0855, 82.1425],
+                status: "active",
+                paper: 25,
+                ink: 15,
+                alertLevel: "warning",
+                alertMsg: "Low Paper and Ink levels.",
+                jobs: 289,
+                lastPing: "1 min ago"
+            },
+            {
+                id: "OTP-110",
+                name: "Bilaspur University",
+                address: "Atal Bihari Vajpayee Vishwavidyalaya, Bilaspur",
+                coords: [22.0980, 82.1520],
+                status: "active",
+                paper: 95,
+                ink: 90,
+                alertLevel: "none",
+                alertMsg: "",
+                jobs: 112,
+                lastPing: "Just now"
+            }
+        ];
+
+        // --- MAP INITIALIZATION ---
+        // Center on Bilaspur
+        const map = L.map('map', { zoomControl: false }).setView([22.0796, 82.1391], 13);
+        
+        // Add minimal map tiles (CartoDB Positron for a clean, dashboard look)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+        
+        // Move zoom control to bottom right
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        // Store marker references
+        const markers = {};
+        let activeKioskId = null;
+
+        // Function to create custom HTML markers
+        function createMarkerHtml(kiosk) {
+            let colorClass = 'marker-active';
+            let pulseHtml = '';
+
+            if (kiosk.status === 'inactive') {
+                colorClass = 'marker-inactive';
+                pulseHtml = '<div class="pulse pulse-red"></div>';
+            } else if (kiosk.alertLevel === 'warning') {
+                colorClass = 'marker-warning';
+                pulseHtml = '<div class="pulse pulse-yellow"></div>';
+            }
+
+            return `
+                <div class="custom-marker">
+                    ${pulseHtml}
+                    <div class="marker-pin ${colorClass}">
+                        <div style="width: 10px; height: 10px; background: currentColor; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.2"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize Kiosks
+        const listContainer = document.getElementById('kiosk-list');
+        document.getElementById('kiosk-count').innerText = kioskData.length;
+
+        kioskData.forEach(kiosk => {
+            // 1. Add Marker to Map
+            const customIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: createMarkerHtml(kiosk),
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            const marker = L.marker(kiosk.coords, { icon: customIcon }).addTo(map);
+            markers[kiosk.id] = marker;
+
+            // Marker Click Event
+            marker.on('click', () => selectKiosk(kiosk.id));
+
+            // 2. Add to Sidebar List
+            let statusDot = kiosk.status === 'active' ? 'bg-green-500' : 'bg-red-500';
+            if(kiosk.status === 'active' && kiosk.alertLevel === 'warning') statusDot = 'bg-yellow-500';
+
+            const listItem = document.createElement('div');
+            listItem.id = `list-item-${kiosk.id}`;
+            listItem.className = 'sidebar-item p-3 rounded-lg border border-transparent';
+            listItem.innerHTML = `
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h4 class="text-sm font-semibold text-slate-800">${kiosk.name}</h4>
+                        <p class="text-xs text-slate-500 mt-0.5 font-mono">${kiosk.id}</p>
+                    </div>
+                    <span class="w-2.5 h-2.5 rounded-full ${statusDot} mt-1 flex-none shadow-sm"></span>
+                </div>
+                <div class="flex gap-3 mt-2 text-xs font-medium text-slate-500">
+                    <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3 h-3"></i> ${kiosk.paper}%</span>
+                    <span class="flex items-center gap-1"><i data-lucide="droplet" class="w-3 h-3"></i> ${kiosk.ink}%</span>
+                </div>
+            `;
+            listItem.onclick = () => selectKiosk(kiosk.id);
+            listContainer.appendChild(listItem);
+        });
+
+        // Re-render lucide icons for dynamic content
+        lucide.createIcons();
+
+        // --- SELECTION LOGIC ---
+        function selectKiosk(id) {
+            const kiosk = kioskData.find(k => k.id === id);
+            if (!kiosk) return;
+
+            // UI State updates
+            activeKioskId = id;
+            
+            // Highlight list item
+            document.querySelectorAll('.sidebar-item').forEach(el => {
+                el.classList.remove('selected', 'bg-blue-50', 'border-blue-500');
+            });
+            document.getElementById(`list-item-${id}`).classList.add('selected');
+
+            // Pan Map
+            map.flyTo(kiosk.coords, 16, { duration: 1.5, easeLinearity: 0.25 });
+
+            // Toggle Panels
+            document.getElementById('empty-state').classList.add('hidden');
+            const detailPanel = document.getElementById('kiosk-details');
+            detailPanel.classList.remove('hidden');
+            detailPanel.classList.add('flex');
+
+            // Populate Data
+            document.getElementById('det-id').innerText = kiosk.id;
+            document.getElementById('det-name').innerText = kiosk.name;
+            document.getElementById('det-address').innerHTML = `<i data-lucide="map" class="w-4 h-4 mt-0.5 flex-none"></i><span>${kiosk.address}</span>`;
+            document.getElementById('det-jobs').innerText = kiosk.jobs;
+            document.getElementById('det-ping').innerText = kiosk.lastPing;
+
+            // Status Badge
+            const statusBadge = document.getElementById('det-status');
+            if (kiosk.status === 'active') {
+                statusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 bg-green-100 text-green-700 border border-green-200';
+                statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Online';
+            } else {
+                statusBadge.className = 'text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 bg-red-100 text-red-700 border border-red-200';
+                statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Offline';
+            }
+
+            // Alerts
+            const alertBox = document.getElementById('alert-container');
+            if (kiosk.alertLevel === 'none') {
+                alertBox.classList.add('hidden');
+            } else {
+                alertBox.classList.remove('hidden');
+                document.getElementById('alert-msg').innerText = kiosk.alertMsg;
+                
+                if (kiosk.alertLevel === 'critical') {
+                    alertBox.className = 'mb-6 p-4 rounded-lg border-l-4 shadow-sm bg-red-50 border-red-500 text-red-800';
+                    document.getElementById('alert-icon').className = 'w-5 h-5 flex-none text-red-500';
+                    document.getElementById('alert-title').innerText = 'Critical Error';
+                } else {
+                    alertBox.className = 'mb-6 p-4 rounded-lg border-l-4 shadow-sm bg-yellow-50 border-yellow-500 text-yellow-800';
+                    document.getElementById('alert-icon').className = 'w-5 h-5 flex-none text-yellow-500';
+                    document.getElementById('alert-title').innerText = 'System Warning';
+                }
+            }
+
+            // Progress Bars logic
+            setTimeout(() => {
+                updateProgressBar('det-paper-bar', 'det-paper-text', kiosk.paper);
+                updateProgressBar('det-ink-bar', 'det-ink-text', kiosk.ink);
+            }, 50);
+
+            // Re-render icons injected dynamically
+            lucide.createIcons();
+        }
+
+        function updateProgressBar(barId, textId, value) {
+            const bar = document.getElementById(barId);
+            const text = document.getElementById(textId);
+            
+            bar.style.width = value + '%';
+            text.innerText = value + '%';
+
+            // Color coding
+            if (value <= 15) {
+                bar.className = 'progress-bar-fill h-2.5 rounded-full bg-gradient-red shadow-[0_0_8px_rgba(239,68,68,0.5)]';
+                text.className = 'text-sm font-bold text-red-600';
+            } else if (value <= 30) {
+                bar.className = 'progress-bar-fill h-2.5 rounded-full bg-gradient-yellow shadow-[0_0_8px_rgba(245,158,11,0.5)]';
+                text.className = 'text-sm font-bold text-yellow-600';
+            } else {
+                bar.className = 'progress-bar-fill h-2.5 rounded-full bg-gradient-blue shadow-[0_0_8px_rgba(59,130,246,0.5)]';
+                text.className = 'text-sm font-bold text-slate-700';
+            }
+        }
+    </script>
+</body>
+</html>
