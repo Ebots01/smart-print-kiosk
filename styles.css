@@ -159,22 +159,26 @@ button { cursor: pointer; border: none; font-family: inherit; }
 .kiosk-frame {
   position: relative;
   width: 100%;
-  max-width: 320px; /* Fits the vertical kiosk perfectly */
+  max-width: 260px; /* Reduced width to automatically make the height shorter */
   margin: 0 auto;
-  background: transparent;
+  background: rgba(10, 20, 40, 0.5); /* Slight dark background inside the box */
   border-radius: 12px;
   overflow: hidden;
   z-index: 1;
-  /* Adds a subtle cyan glow around the machine */
   box-shadow: 0 10px 40px rgba(100, 255, 218, 0.2);
   border: 1px solid rgba(100, 255, 218, 0.15);
+  padding: 15px; /* Adds space inside so the kiosk edges never get cut */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .kiosk-img {
   width: 100%;
   height: auto;
+  max-height: 420px; /* Strict limit to stop it from getting too tall */
+  object-fit: contain; /* Forces the browser to show 100% of the image width without cutting */
   display: block;
-  /* Slight contrast boost to make it pop against the dark web background */
   filter: contrast(1.05) brightness(1.1); 
 }
 
