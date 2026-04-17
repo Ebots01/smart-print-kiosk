@@ -158,27 +158,36 @@ button { cursor: pointer; border: none; font-family: inherit; }
 }
 .kiosk-frame {
   position: relative;
-  background: var(--bg-card);
-  border: 1px solid rgba(255,255,255,0.1);
+  width: 100%;
+  max-width: 320px; /* Fits the vertical kiosk perfectly */
+  margin: 0 auto;
+  background: transparent;
   border-radius: 12px;
   overflow: hidden;
   z-index: 1;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  /* Adds a subtle cyan glow around the machine */
+  box-shadow: 0 10px 40px rgba(100, 255, 218, 0.2);
+  border: 1px solid rgba(100, 255, 218, 0.15);
 }
+
 .kiosk-img {
   width: 100%;
   height: auto;
   display: block;
-  opacity: 0.8;
+  /* Slight contrast boost to make it pop against the dark web background */
+  filter: contrast(1.05) brightness(1.1); 
 }
+
 .sim-scan-line {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
+  height: 3px;
   background: var(--accent-cyan);
-  box-shadow: 0 0 15px var(--accent-cyan);
-  animation: scan 3s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--accent-cyan);
+  animation: scan 4s ease-in-out infinite;
+  z-index: 5;
 }
+
 .sim-doc {
   position: absolute;
   background: var(--accent-white);
