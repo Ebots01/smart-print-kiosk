@@ -3,504 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>One Tap Print — Fast. Private. Always On.</title>
-  <meta name="description" content="Print any document in under 60 seconds. Self-service kiosks that auto-delete your files. Fast, private, 24/7." />
+  <title>One Tap Print — Because time and privacy matter.</title>
+  <meta name="description" content="Print any document instantly. Fast, private, 24/7." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- ═══ NOISE OVERLAY ═══ -->
-  <div class="noise-overlay" aria-hidden="true"></div>
-
-  <!-- ═══ NAVBAR ═══ -->
-  <nav id="navbar" role="navigation" aria-label="Main navigation">
+  <nav id="navbar" role="navigation">
     <div class="nav-inner">
-      <a href="#" class="nav-logo" aria-label="One Tap Print home">
-        <span class="logo-mark">●</span>
-        <span>One<span class="logo-accent">Tap</span>Print</span>
+      <a href="#" class="nav-logo">
+        <span class="logo-mark">●</span> OneTap<span>Print</span>
       </a>
-      <ul class="nav-links" role="list">
+      <ul class="nav-links">
         <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#location">Find Kiosk</a></li>
+        <li><a href="#location">Location</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <a href="#location" class="btn btn-nav">Find Kiosk →</a>
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <a href="#how-it-works" class="btn btn-outline">Start Print</a>
+      <button class="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
-  <!-- ═══ MOBILE MENU ═══ -->
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-    <ul role="list">
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
       <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#location">Find Kiosk</a></li>
+      <li><a href="#location">Location</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="#location" class="btn btn-primary">Find a Kiosk →</a>
   </div>
 
-  <!-- ═══ HERO ═══ -->
-  <section id="hero" aria-labelledby="hero-heading">
-    <div class="hero-bg-grid" aria-hidden="true"></div>
-    <div class="hero-orb orb-1" aria-hidden="true"></div>
-    <div class="hero-orb orb-2" aria-hidden="true"></div>
-
-    <div class="hero-inner">
-      <div class="hero-badge reveal">
-        <span class="badge-dot"></span>
-        <span>24/7 · No Queue · No Account Needed</span>
-      </div>
-
-      <h1 id="hero-heading" class="hero-heading reveal delay-1">
-        Your Documents.<br />
-        Printed in <em>One Tap.</em>
-      </h1>
-
-      <p class="hero-sub reveal delay-2">
-        Walk up. Scan. Print. Walk away.<br />
-        Files auto-deleted after printing. Always.
-      </p>
-
-      <div class="hero-actions reveal delay-3">
-        <a href="#location" class="btn btn-primary btn-lg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Find a Kiosk
-        </a>
-        <a href="#how-it-works" class="btn btn-ghost btn-lg">
-          How It Works
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-
-      <div class="hero-stats reveal delay-4" role="list">
-        <div class="stat" role="listitem">
-          <span class="stat-num" data-target="60">0</span><span class="stat-unit">s</span>
-          <span class="stat-label">Average Print Time</span>
-        </div>
-        <div class="stat-divider" aria-hidden="true"></div>
-        <div class="stat" role="listitem">
-          <span class="stat-num" data-target="100">0</span><span class="stat-unit">%</span>
-          <span class="stat-label">Auto File Deletion</span>
-        </div>
-        <div class="stat-divider" aria-hidden="true"></div>
-        <div class="stat" role="listitem">
-          <span class="stat-num" data-target="24">0</span><span class="stat-unit">/7</span>
-          <span class="stat-label">Always Available</span>
+  <section id="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="container hero-split">
+      
+      <div class="hero-left reveal">
+        <div class="kiosk-simulation">
+          <div class="sim-bg-glow"></div>
+          <div class="kiosk-frame">
+            <img src="assets/images/kiosk-photo.jpg" alt="One Tap Print Kiosk" class="kiosk-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwZDE4MzIiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZmlsbD0iIzRmNWQ3ZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5bIEtpc2sgUGhvdG8gUGxhY2Vob2xkZXIgXTwvdGV4dD48L3N2Zz4='"/>
+            
+            <div class="sim-scan-line"></div>
+            <div class="sim-doc doc-1">PDF</div>
+            <div class="sim-doc doc-2">DOCX</div>
+            <div class="sim-status">
+              <span class="status-dot"></span> System Online
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hero-scroll-hint" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
+      <div class="hero-right reveal delay-1">
+        <h1 class="hero-title">One Tap <span>Print</span></h1>
+        <p class="hero-tagline">Because time and privacy matter.</p>
+        <p class="hero-intro">
+          Experience the fastest, most secure way to print your documents. Send your files directly to our secure server and release them at the kiosk instantly. Zero queues, zero human contact.
+        </p>
+        <div class="hero-options">
+          <a href="#how-it-works" class="btn btn-primary btn-lg">Start Print →</a>
+          <a href="#location" class="btn btn-secondary btn-lg">Find Kiosk</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ═══ TICKER STRIP ═══ -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>⚡ Under 60 Seconds</span>
-      <span>🔒 End-to-End Encrypted</span>
-      <span>🗑️ Files Auto-Deleted</span>
-      <span>📄 PDF · DOCX · JPG · PNG</span>
-      <span>🕐 Open 24/7</span>
-      <span>📱 Scan & Print via QR</span>
-      <span>💳 Pay by UPI · Cash · Card</span>
-      <span>⚡ Under 60 Seconds</span>
-      <span>🔒 End-to-End Encrypted</span>
-      <span>🗑️ Files Auto-Deleted</span>
-      <span>📄 PDF · DOCX · JPG · PNG</span>
-      <span>🕐 Open 24/7</span>
-      <span>📱 Scan & Print via QR</span>
-      <span>💳 Pay by UPI · Cash · Card</span>
-    </div>
-  </div>
-
-  <!-- ═══ HOW IT WORKS ═══ -->
-  <section id="how-it-works" aria-labelledby="steps-heading">
+  <section id="how-it-works">
     <div class="container">
-      <div class="section-label reveal">Process</div>
-      <h2 id="steps-heading" class="section-heading reveal delay-1">
-        Three steps.<br /><span class="text-accent">That's literally it.</span>
-      </h2>
-      <p class="section-sub reveal delay-2">No app. No login. No waiting. Just walk up and print.</p>
+      <div class="section-header reveal">
+        <h2>How It Works</h2>
+        <p>Three simple steps to secure, instant printing.</p>
+      </div>
 
       <div class="steps-grid">
-
         <div class="step-card reveal delay-1">
-          <div class="step-number" aria-hidden="true">01</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.5"/>
-              <rect x="10" y="32" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.5"/>
-              <rect x="32" y="10" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2.5"/>
-              <rect x="36" y="36" width="6" height="6" rx="1" fill="currentColor"/>
-              <path d="M32 32h6v4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M38 44h6v2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M44 38v6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="step-title">Scan the QR</h3>
-          <p class="step-desc">Find the kiosk, open your camera, and scan the QR code. No app download, no account creation — ever.</p>
-          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step-num">01</div>
+          <h3>Message the Bot</h3>
+          <p>Send your document securely to our dedicated WhatsApp or Telegram messaging bot. Your file is encrypted and sent straight to our cloud server.</p>
         </div>
 
         <div class="step-card reveal delay-2">
-          <div class="step-number" aria-hidden="true">02</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M28 36V20M20 28l8-8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="10" y="38" width="36" height="8" rx="3" stroke="currentColor" stroke-width="2.5"/>
-              <path d="M18 42h4M26 42h4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="step-title">Upload Your File</h3>
-          <p class="step-desc">Pick your file from your phone or cloud. PDF, Word, JPG — all supported. Choose print settings instantly.</p>
-          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step-num">02</div>
+          <h3>Start Print</h3>
+          <p>Walk up to the One Tap Print kiosk and enter the unique 4-digit release code provided by the bot to authenticate your session.</p>
         </div>
 
         <div class="step-card reveal delay-3">
-          <div class="step-number" aria-hidden="true">03</div>
-          <div class="step-icon" aria-hidden="true">
-            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="8" y="22" width="40" height="20" rx="3" stroke="currentColor" stroke-width="2.5"/>
-              <path d="M16 22V16a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v6" stroke="currentColor" stroke-width="2.5"/>
-              <rect x="16" y="34" width="24" height="10" rx="2" stroke="currentColor" stroke-width="2.5"/>
-              <circle cx="36" cy="30" r="2" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3 class="step-title">Collect & Go</h3>
-          <p class="step-desc">Pay and print in seconds. Collect your document from the tray. Your file is permanently deleted right after.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ FEATURES ═══ -->
-  <section id="features" aria-labelledby="features-heading">
-    <div class="container">
-      <div class="features-layout">
-
-        <div class="features-left">
-          <div class="section-label reveal">Why Us</div>
-          <h2 id="features-heading" class="section-heading reveal delay-1">
-            Built for people<br />who value their <span class="text-accent">time.</span>
-          </h2>
-          <p class="section-sub reveal delay-2">Every decision we made was to make printing feel effortless, fast, and completely trustworthy.</p>
-
-          <div class="feature-list">
-
-            <div class="feature-item reveal delay-1">
-              <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2"/><path d="M16 10v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <h3>60-Second Prints</h3>
-                <p>From scan to collection in under a minute. No bottlenecks, no paper jams, no delays.</p>
-              </div>
-            </div>
-
-            <div class="feature-item reveal delay-2">
-              <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 32 32" fill="none"><path d="M16 4l10 4v8c0 5.5-4 10-10 12C10 26 6 21.5 6 16V8l10-4z" stroke="currentColor" stroke-width="2"/><path d="M11 16l3 3 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div>
-                <h3>Zero-Trace Privacy</h3>
-                <p>Files are encrypted in transit and permanently deleted immediately after printing. No logs kept.</p>
-              </div>
-            </div>
-
-            <div class="feature-item reveal delay-3">
-              <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2"/><path d="M16 8v8l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <h3>Always Open, Never Down</h3>
-                <p>Operational 24 hours a day, 7 days a week. Self-maintained hardware with remote monitoring.</p>
-              </div>
-            </div>
-
-            <div class="feature-item reveal delay-4">
-              <div class="feature-icon" aria-hidden="true">
-                <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="18" rx="3" stroke="currentColor" stroke-width="2"/><path d="M10 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2"/><path d="M10 18h12M10 22h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <h3>All Formats Supported</h3>
-                <p>PDF, DOCX, XLSX, JPG, PNG. Black & white or colour. A4 or Letter. You choose.</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="features-right reveal delay-2">
-          <div class="feature-card-big">
-            <div class="big-card-inner">
-              <div class="big-card-badge">LIVE</div>
-              <div class="big-card-icon" aria-hidden="true">
-                <svg viewBox="0 0 80 80" fill="none">
-                  <circle cx="40" cy="40" r="30" stroke="rgba(99,102,241,0.3)" stroke-width="20"/>
-                  <circle cx="40" cy="40" r="30" stroke="url(#grad1)" stroke-width="4" stroke-dasharray="120 70"/>
-                  <path d="M40 22v18l10 6" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
-                  <defs>
-                    <linearGradient id="grad1" x1="10" y1="10" x2="70" y2="70" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="#6366f1"/>
-                      <stop offset="1" stop-color="#22d3ee"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-              <div class="big-card-stat">
-                <span class="big-stat-num" data-target="58" data-suffix="s">—</span>
-                <span class="big-stat-label">avg. print time today</span>
-              </div>
-              <div class="big-card-bars" aria-hidden="true">
-                <div class="bar" style="--h:40%"></div>
-                <div class="bar" style="--h:65%"></div>
-                <div class="bar" style="--h:50%"></div>
-                <div class="bar" style="--h:80%"></div>
-                <div class="bar" style="--h:60%"></div>
-                <div class="bar" style="--h:90%"></div>
-                <div class="bar" style="--h:70%"></div>
-                <div class="bar active" style="--h:55%"></div>
-              </div>
-              <p class="big-card-sub">Kiosk is online · All systems normal</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ COMPARISON ═══ -->
-  <section id="comparison" aria-labelledby="comparison-heading">
-    <div class="container">
-      <div class="section-label reveal">Vs. Traditional</div>
-      <h2 id="comparison-heading" class="section-heading reveal delay-1">Why switch?</h2>
-
-      <div class="compare-grid">
-        <div class="compare-card compare-old reveal delay-1">
-          <div class="compare-header">
-            <span class="compare-tag tag-old">Old Way</span>
-            <h3>Photocopy Shop</h3>
-          </div>
-          <ul class="compare-list" role="list">
-            <li class="con"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> Wait in queue</li>
-            <li class="con"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> Hand your phone/drive to a stranger</li>
-            <li class="con"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> Closed nights & holidays</li>
-            <li class="con"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> No privacy guarantee</li>
-            <li class="con"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg> Variable pricing, no receipts</li>
-          </ul>
-        </div>
-
-        <div class="compare-card compare-new reveal delay-2">
-          <div class="compare-header">
-            <span class="compare-tag tag-new">One Tap Print</span>
-            <h3>Self-Service Kiosk</h3>
-          </div>
-          <ul class="compare-list" role="list">
-            <li class="pro"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Print in under 60 seconds</li>
-            <li class="pro"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> 100% self-service, zero contact</li>
-            <li class="pro"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Available 24 hours, 7 days</li>
-            <li class="pro"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Files auto-deleted, guaranteed</li>
-            <li class="pro"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Fixed pricing, digital receipt</li>
-          </ul>
+          <div class="step-num">03</div>
+          <h3>Collect & Go</h3>
+          <p>Your document prints in seconds. Once completed, your file is permanently auto-deleted from the server to guarantee your privacy.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ LOCATION ═══ -->
-  <section id="location" aria-labelledby="location-heading">
+  <section id="location">
     <div class="container">
-      <div class="section-label reveal">Find Us</div>
-      <h2 id="location-heading" class="section-heading reveal delay-1">Visit the Kiosk</h2>
-      <p class="section-sub reveal delay-2">Walk in anytime. No appointment, no staff needed.</p>
+      <div class="section-header reveal">
+        <h2>Kiosk Location</h2>
+        <p>Walk in anytime. No appointment needed.</p>
+      </div>
 
-      <div class="location-grid">
-
-        <div class="location-info reveal delay-1">
-          <div class="info-card">
-            <div class="info-row">
-              <div class="info-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <div>
-                <div class="info-label">Address</div>
-                <div class="info-value">Ground Floor, Tech Hub Building,<br />MG Road, Raipur, CG – 492001</div>
-              </div>
-            </div>
-
-            <div class="info-row">
-              <div class="info-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
-              <div>
-                <div class="info-label">Hours</div>
-                <div class="info-value">Open 24 Hours · 7 Days a Week</div>
-              </div>
-            </div>
-
-            <div class="info-row">
-              <div class="info-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.6 4.93 2 2 0 0 1 3.57 2.73h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              </div>
-              <div>
-                <div class="info-label">WhatsApp Support</div>
-                <div class="info-value">
-                  <a href="https://wa.me/919876543210" class="info-link">+91 98765 43210</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="info-actions">
-              <a href="https://maps.google.com/maps?q=21.2514,81.6296" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Open in Maps
-              </a>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-                WhatsApp Us
-              </a>
-            </div>
-
-            <div class="kiosk-status">
-              <span class="status-dot"></span>
-              <span>Kiosk Online · Last checked 3 min ago</span>
-            </div>
-          </div>
+      <div class="location-box reveal delay-1">
+        <div class="loc-details">
+          <h3>Tech Hub Building</h3>
+          <p><strong>Address:</strong> Ground Floor, MG Road, Raipur, CG – 492001</p>
+          <p><strong>Hours:</strong> Open 24/7</p>
+          <a href="https://maps.google.com/maps?q=21.2514,81.6296" target="_blank" class="btn btn-outline">Open in Maps</a>
         </div>
-
-        <div class="location-map reveal delay-2">
-          <div class="map-wrapper">
-            <iframe
-              src="https://maps.google.com/maps?q=21.2514,81.6296&z=17&output=embed"
-              title="One Tap Print Kiosk Location — MG Road, Raipur"
-              loading="lazy"
-              allowfullscreen
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-            <div class="map-overlay-pin" aria-hidden="true">
-              <div class="pin-pulse"></div>
-              <div class="pin-dot"></div>
-            </div>
-          </div>
+        <div class="loc-map">
+          <iframe src="https://maps.google.com/maps?q=21.2514,81.6296&z=17&output=embed" loading="lazy"></iframe>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ═══ CONTACT ═══ -->
-  <section id="contact" aria-labelledby="contact-heading">
+  <section id="contact">
     <div class="container">
-      <div class="section-label reveal">Get In Touch</div>
-      <h2 id="contact-heading" class="section-heading reveal delay-1">Have a question?</h2>
-      <p class="section-sub reveal delay-2">We respond within a few hours, every day of the week.</p>
+      <div class="section-header reveal">
+        <h2>Contact Us</h2>
+        <p>Need help or have a business inquiry? We're here.</p>
+      </div>
 
       <div class="contact-grid">
-        <div class="contact-channels reveal delay-1">
-          <a href="mailto:hello@onetapprint.in" class="channel-card">
-            <div class="channel-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <div>
-              <div class="channel-label">Email</div>
-              <div class="channel-value">hello@onetapprint.in</div>
-            </div>
-            <svg class="channel-arrow" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-          </a>
-          <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="channel-card">
-            <div class="channel-icon channel-icon-green" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </div>
-            <div>
-              <div class="channel-label">WhatsApp</div>
-              <div class="channel-value">+91 98765 43210</div>
-            </div>
-            <svg class="channel-arrow" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-          </a>
+        <div class="contact-info reveal delay-1">
+          <div class="contact-card">
+            <h4>Email Support</h4>
+            <p><a href="mailto:hello@onetapprint.in">hello@onetapprint.in</a></p>
+          </div>
+          <div class="contact-card">
+            <h4>WhatsApp Helpline</h4>
+            <p><a href="https://wa.me/919876543210">+91 98765 43210</a></p>
+          </div>
         </div>
 
-        <form id="contact-form" class="contact-form reveal delay-2" novalidate aria-label="Contact form">
-          <div class="form-row">
-            <div class="form-field">
-              <label for="name">Your Name</label>
-              <input type="text" id="name" name="name" placeholder="Rahul Sharma" autocomplete="name" required />
-            </div>
-            <div class="form-field">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" placeholder="rahul@example.com" autocomplete="email" required />
-            </div>
+        <form id="contact-form" class="reveal delay-2">
+          <div class="input-group">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
           </div>
-          <div class="form-field">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" placeholder="e.g. Bulk printing inquiry" />
-          </div>
-          <div class="form-field">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="4" placeholder="Tell us what you need..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-submit">
-            Send Message
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
+          <textarea placeholder="Your Message" rows="4" required></textarea>
+          <button type="submit" class="btn btn-primary">Send Message</button>
         </form>
-
-        <div id="form-success" class="form-success" hidden aria-live="polite">
-          <div class="success-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <h3>Message sent!</h3>
-          <p>We'll get back to you within a few hours. Check your inbox.</p>
-        </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ═══ FOOTER ═══ -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="#" class="nav-logo" aria-label="One Tap Print home">
-            <span class="logo-mark">●</span>
-            <span>One<span class="logo-accent">Tap</span>Print</span>
-          </a>
-          <p>Fast. Private. Always On.<br />Self-service document printing in Raipur.</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="brand">
+          <h3>One Tap Print</h3>
+          <p>Because time and privacy matter.</p>
         </div>
-        <div class="footer-links">
-          <div class="footer-col">
-            <div class="footer-col-title">Navigate</div>
-            <ul role="list">
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="#features">Features</a></li>
-              <li><a href="#comparison">Why Us</a></li>
-              <li><a href="#location">Find Kiosk</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <div class="footer-col-title">Contact</div>
-            <ul role="list">
-              <li><a href="mailto:hello@onetapprint.in">hello@onetapprint.in</a></li>
-              <li><a href="https://wa.me/919876543210">WhatsApp Us</a></li>
-              <li><a href="#contact">Send a Message</a></li>
-            </ul>
-          </div>
+        <div class="legal">
+          <p>&copy; <span id="year"></span> One Tap Print. All rights reserved.</p>
         </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© <span id="year"></span> One Tap Print. All rights reserved.</p>
-        <p class="footer-legal">Files are deleted immediately after printing. We never store your data.</p>
       </div>
     </div>
   </footer>
