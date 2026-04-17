@@ -159,29 +159,36 @@ button { cursor: pointer; border: none; font-family: inherit; }
 .kiosk-frame {
   position: relative;
   width: 100%;
-  max-width: 260px; /* Reduced width to automatically make the height shorter */
+  max-width: 260px;
   margin: 0 auto;
-  background: rgba(10, 20, 40, 0.5); /* Slight dark background inside the box */
+  background: rgba(10, 20, 40, 0.5);
   border-radius: 12px;
-  overflow: hidden;
+  /* Removed overflow: hidden so badges can float outside */
   z-index: 1;
   box-shadow: 0 10px 40px rgba(100, 255, 218, 0.2);
   border: 1px solid rgba(100, 255, 218, 0.15);
-  padding: 15px; /* Adds space inside so the kiosk edges never get cut */
+  padding: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* New wrapper to contain the laser over the image */
+.kiosk-img-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 8px; /* Slightly rounds inner image corners */
+  overflow: hidden; /* Hides the laser when it goes past the image */
+}
+
 .kiosk-img {
   width: 100%;
   height: auto;
-  max-height: 420px; /* Strict limit to stop it from getting too tall */
-  object-fit: contain; /* Forces the browser to show 100% of the image width without cutting */
+  max-height: 420px;
+  object-fit: contain;
   display: block;
   filter: contrast(1.05) brightness(1.1); 
 }
-
 .sim-scan-line {
   position: absolute;
   top: 0; left: 0; right: 0;
