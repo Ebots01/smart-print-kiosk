@@ -1,230 +1,169 @@
 /* ============================================================
-   SWIFTPRINT — MAIN.JS
-   Animations, particles, scroll effects, interactions
+   ONE TAP PRINT — MAIN.JS
+   Scroll reveal · Navbar · Counter · Mobile menu · Form
    ============================================================ */
 
 "use strict";
 
-// ── LOADER ──────────────────────────────────────────────────
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
-    if (loader) loader.classList.add("hidden");
-  }, 1900);
-});
-
-// ── CUSTOM CURSOR ────────────────────────────────────────────
-const cursorDot  = document.querySelector(".cursor-dot");
-const cursorRing = document.querySelector(".cursor-ring");
-let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-document.addEventListener("mousemove", e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  if (cursorDot) {
-    cursorDot.style.left = mouseX + "px";
-    cursorDot.style.top  = mouseY + "px";
-  }
-});
-
-function animateCursor() {
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-  if (cursorRing) {
-    cursorRing.style.left = ringX + "px";
-    cursorRing.style.top  = ringY + "px";
-  }
-  requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-document.querySelectorAll("a, button, .step-card, .feature-item, .social-pill").forEach(el => {
-  el.addEventListener("mouseenter", () => cursorRing?.classList.add("hover"));
-  el.addEventListener("mouseleave", () => cursorRing?.classList.remove("hover"));
-});
-
-// ── SCROLL PROGRESS BAR ──────────────────────────────────────
-const scrollBar = document.getElementById("scroll-bar");
-window.addEventListener("scroll", () => {
-  const total  = document.body.scrollHeight - window.innerHeight;
-  const pct    = (window.scrollY / total) * 100;
-  if (scrollBar) scrollBar.style.width = pct + "%";
-}, { passive: true });
-
-// ── NAVBAR SCROLL ────────────────────────────────────────────
+/* ── NAVBAR SCROLL ──────────────────────────────────────────── */
 const navbar = document.getElementById("navbar");
+let lastScrollY = 0;
+
 window.addEventListener("scroll", () => {
-  if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 50);
+  const y = window.scrollY;
+  navbar.classList.toggle("scrolled", y > 40);
+  lastScrollY = y;
 }, { passive: true });
 
-// ── MOBILE NAV ───────────────────────────────────────────────
-const hamburger = document.querySelector(".nav-hamburger");
-const navLinks  = document.querySelector(".nav-links");
+/* ── MOBILE MENU ────────────────────────────────────────────── */
+const hamburger = document.querySelector(".hamburger");
+const mobileMenu = document.getElementById("mobile-menu");
 
-if (hamburger && navLinks) {
+if (hamburger && mobileMenu) {
   hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-    const spans = hamburger.querySelectorAll("span");
-    if (navLinks.classList.contains("open")) {
-      spans[0].style.transform = "translateY(7px) rotate(45deg)";
-      spans[1].style.opacity   = "0";
-      spans[2].style.transform = "translateY(-7px) rotate(-45deg)";
+    const isOpen = mobileMenu.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", isOpen);
+    mobileMenu.setAttribute("aria-hidden", !isOpen);
+
+    const [s1, , s3] = hamburger.querySelectorAll("span");
+    if (isOpen) {
+      s1.style.cssText = "transform: translateY(7px) rotate(45deg)";
+      hamburger.querySelectorAll("span")[1].style.opacity = "0";
+      s3.style.cssText = "transform: translateY(-7px) rotate(-45deg)";
     } else {
-      spans.forEach(s => { s.style.transform = ""; s.style.opacity = ""; });
+      hamburger.querySelectorAll("span").forEach(s => s.style.cssText = "");
     }
   });
-  navLinks.querySelectorAll("a").forEach(a =>
+
+  mobileMenu.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => {
-      navLinks.classList.remove("open");
-      hamburger.querySelectorAll("span").forEach(s => { s.style.transform = ""; s.style.opacity = ""; });
-    })
-  );
+      mobileMenu.classList.remove("open");
+      mobileMenu.setAttribute("aria-hidden", "true");
+      hamburger.setAttribute("aria-expanded", "false");
+      hamburger.querySelectorAll("span").forEach(s => s.style.cssText = "");
+    });
+  });
 }
 
-// ── PARTICLES CANVAS ─────────────────────────────────────────
-(function initParticles() {
-  const canvas = document.getElementById("particles-canvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener("resize", resize, { passive: true });
-
-  const COUNT = window.innerWidth < 768 ? 40 : 80;
-
-  for (let i = 0; i < COUNT; i++) {
-    particles.push({
-      x: Math.random() * 1000,
-      y: Math.random() * 1000,
-      r: Math.random() * 1.8 + 0.4,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      opacity: Math.random() * 0.5 + 0.15,
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 150, 255, ${p.opacity})`;
-      ctx.fill();
-    });
-
-    // Draw connections
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(0, 100, 255, ${(1 - dist / 120) * 0.18})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ── SCROLL REVEAL ────────────────────────────────────────────
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+/* ── SCROLL REVEAL ──────────────────────────────────────────── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const el = entry.target;
-      const delay = el.dataset.delay || 0;
-      setTimeout(() => el.classList.add("visible"), Number(delay));
-      observer.unobserve(el);
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.1, rootMargin: "0px 0px -60px 0px" });
 
-document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
-// ── COUNTER ANIMATION ────────────────────────────────────────
-function animateCounter(el, target, suffix) {
-  let start = 0;
-  const duration = 1800;
-  const step = (timestamp) => {
-    if (!start) start = timestamp;
-    const pct = Math.min((timestamp - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - pct, 3); // ease out cubic
-    el.textContent = Math.floor(ease * target);
-    if (pct < 1) requestAnimationFrame(step);
-    else el.textContent = target;
-  };
+/* ── COUNTER ANIMATION ──────────────────────────────────────── */
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function animateCounter(el, target, suffix = "") {
+  const duration = 1600;
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const value = Math.floor(easeOutCubic(progress) * target);
+    el.textContent = value + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target + suffix;
+  }
+
   requestAnimationFrame(step);
 }
 
-const counterObserver = new IntersectionObserver(entries => {
+/* Hero stats counter */
+const heroStatObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      const el    = entry.target;
-      const value = parseInt(el.dataset.count, 10);
-      const suf   = el.dataset.suffix || "";
-      animateCounter(el, value, suf);
-      counterObserver.unobserve(el);
+      const el = entry.target;
+      const target = parseInt(el.dataset.target, 10);
+      const unit = el.nextElementSibling?.textContent || "";
+      animateCounter(el, target);
+      heroStatObserver.unobserve(el);
     }
   });
 }, { threshold: 0.5 });
 
-document.querySelectorAll(".stat-num").forEach(el => counterObserver.observe(el));
+document.querySelectorAll(".stat-num").forEach(el => heroStatObserver.observe(el));
 
-// ── TICKER DUPLICATION ───────────────────────────────────────
-const track = document.querySelector(".ticker-track");
-if (track) {
-  track.innerHTML += track.innerHTML; // duplicate for seamless loop
-}
-
-// ── TYPED TAGLINE ────────────────────────────────────────────
-const typedEl = document.getElementById("typed-sub");
-if (typedEl) {
-  const text = typedEl.getAttribute("data-text") || typedEl.textContent;
-  typedEl.textContent = "";
-  let i = 0;
-  function typeNext() {
-    if (i < text.length) {
-      typedEl.textContent += text[i++];
-      setTimeout(typeNext, 40);
+/* Big card stat counter */
+const bigStatObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || "";
+      animateCounter(el, target, suffix);
+      bigStatObserver.unobserve(el);
     }
-  }
-  setTimeout(typeNext, 1400);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll(".big-stat-num").forEach(el => bigStatObserver.observe(el));
+
+/* ── TICKER ─────────────────────────────────────────────────── */
+// Ticker runs via pure CSS; this just ensures it's duplicated for seamless loop
+const tickerTrack = document.querySelector(".ticker-track");
+if (tickerTrack && !tickerTrack.dataset.duplicated) {
+  tickerTrack.innerHTML += tickerTrack.innerHTML;
+  tickerTrack.dataset.duplicated = "true";
 }
 
-// ── CONTACT FORM HANDLER ─────────────────────────────────────
+/* ── FOOTER YEAR ────────────────────────────────────────────── */
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+/* ── SMOOTH SCROLL OFFSET (for fixed nav) ───────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function (e) {
+    const href = this.getAttribute("href");
+    if (href === "#") return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    e.preventDefault();
+    const navHeight = navbar?.offsetHeight || 72;
+    const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+    window.scrollTo({ top, behavior: "smooth" });
+  });
+});
+
+/* ── CONTACT FORM ───────────────────────────────────────────── */
 const contactForm = document.getElementById("contact-form");
+const formSuccess = document.getElementById("form-success");
+
 if (contactForm) {
   contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = contactForm.querySelector(".btn-submit");
-    btn.textContent = "Sending...";
-    btn.disabled = true;
 
     const data = {
-      name:    contactForm.name?.value || "",
-      email:   contactForm.email?.value || "",
-      phone:   contactForm.phone?.value || "",
-      subject: contactForm.subject?.value || "",
-      message: contactForm.message?.value || "",
+      name:    contactForm.name?.value?.trim() || "",
+      email:   contactForm.email?.value?.trim() || "",
+      subject: contactForm.subject?.value?.trim() || "",
+      message: contactForm.message?.value?.trim() || "",
     };
+
+    if (!data.name || !data.email || !data.message) {
+      showFormError("Please fill in your name, email, and message.");
+      return;
+    }
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
+    if (!emailOk) {
+      showFormError("Please enter a valid email address.");
+      return;
+    }
+
+    btn.textContent = "Sending…";
+    btn.disabled = true;
 
     try {
       const res = await fetch("/api/contact", {
@@ -234,33 +173,45 @@ if (contactForm) {
       });
 
       if (res.ok) {
-        contactForm.style.display = "none";
-        document.getElementById("form-success").style.display = "block";
+        contactForm.hidden = true;
+        if (formSuccess) formSuccess.hidden = false;
       } else {
-        btn.textContent = "Try Again";
+        btn.innerHTML = "Try Again";
         btn.disabled = false;
-        alert("Something went wrong. Please email us directly.");
+        showFormError("Something went wrong. Try emailing us directly.");
       }
     } catch {
       // Fallback: open email client
-      const body = `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nMessage: ${data.message}`;
-      window.location.href = `mailto:hello@swiftprint.in?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(body)}`;
-      btn.textContent = "Send Message";
+      const body = `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`;
+      window.location.href =
+        `mailto:hello@onetapprint.in?subject=${encodeURIComponent(data.subject || "Enquiry")}&body=${encodeURIComponent(body)}`;
+      btn.innerHTML = "Send Message";
       btn.disabled = false;
     }
   });
 }
 
-// ── GLITCH EFFECT on Logo ────────────────────────────────────
-const glitchEl = document.querySelector(".hero-title .line-blue");
-if (glitchEl) {
-  setInterval(() => {
-    glitchEl.style.textShadow = `
-      ${(Math.random() - 0.5) * 6}px 0 rgba(0, 212, 255, 0.8),
-      ${(Math.random() - 0.5) * 6}px 0 rgba(0, 87, 255, 0.6)
-    `;
-    setTimeout(() => {
-      glitchEl.style.textShadow = "";
-    }, 120);
-  }, 3000);
+function showFormError(msg) {
+  let errEl = contactForm.querySelector(".form-error");
+  if (!errEl) {
+    errEl = document.createElement("p");
+    errEl.className = "form-error";
+    errEl.style.cssText = "color:#f87171;font-size:0.85rem;margin-top:-0.5rem;";
+    contactForm.insertBefore(errEl, contactForm.querySelector(".btn-submit"));
+  }
+  errEl.textContent = msg;
+  setTimeout(() => errEl?.remove(), 5000);
+}
+
+/* ── SUBTLE PARALLAX on hero orbs (mouse move) ──────────────── */
+const orb1 = document.querySelector(".orb-1");
+const orb2 = document.querySelector(".orb-2");
+
+if (orb1 && orb2 && window.matchMedia("(pointer: fine)").matches) {
+  document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    orb1.style.transform = `translate(${x * 0.6}px, ${y * 0.6}px)`;
+    orb2.style.transform = `translate(${-x * 0.4}px, ${-y * 0.4}px)`;
+  }, { passive: true });
 }
