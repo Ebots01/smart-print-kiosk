@@ -3,30 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SwiftPrint — Fast & Secure Print Kiosk</title>
-  <meta name="description" content="SwiftPrint — Instant, secure, 24/7 self-service print kiosk. Because time and privacy matter." />
+  <title>OneTapPrint — Fast &amp; Secure Print Kiosk</title>
+  <meta name="description" content="OneTapPrint — Instant, secure, 24/7 self-service print kiosk at UIET Building, Raipur. Because Time &amp; Privacy Matter." />
   <meta name="theme-color" content="#010810" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="SwiftPrint — Fast & Secure Print" />
-  <meta property="og:description" content="Print in under 60 seconds. 100% encrypted. 24/7 available." />
+  <meta property="og:title" content="OneTapPrint — Fast &amp; Secure Print" />
+  <meta property="og:description" content="Print in under 60 seconds. 100% encrypted. 24/7 available. UIET Building, Raipur." />
   <meta property="og:type" content="website" />
 
-  <!-- Favicon (inline SVG data URI) -->
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>" />
 
-  <!-- Fonts -->
+  <!-- ✅ Google Fonts — properly linked -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- ✅ Config loaded first — before everything else -->
+  <script src="config.js"></script>
 </head>
 <body>
 
 <!-- ── LOADER ─────────────────────────────────────────────── -->
 <div id="loader" aria-hidden="true">
-  <div class="loader-logo">Swift<span style="color:#00d4ff">Print</span></div>
+  <div class="loader-logo">OneTap<span style="color:#00d4ff">Print</span></div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
 </div>
 
@@ -39,8 +43,8 @@
 
 <!-- ── NAVBAR ────────────────────────────────────────────── -->
 <nav id="navbar" role="navigation" aria-label="Main navigation">
-  <a href="#" class="nav-logo" aria-label="SwiftPrint Home">
-    <span class="logo-main">Swift</span><span class="logo-accent">Print</span>
+  <a href="#" class="nav-logo" aria-label="OneTapPrint Home">
+    <span class="logo-main">OneTap</span><span class="logo-accent">Print</span>
   </a>
 
   <ul class="nav-links" id="nav-links">
@@ -65,7 +69,7 @@
   <div class="hero-content">
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      Kiosk Now Active · Available 24/7
+      Kiosk Now Active · UIET Building · Available 24/7
     </div>
 
     <h1 class="hero-title">
@@ -74,7 +78,7 @@
     </h1>
 
     <p class="hero-tagline">
-      <span id="typed-sub" data-text="Because time and privacy matter — print in under 60 seconds, 100% encrypted, always available.">Because time and privacy matter — print in under 60 seconds, 100% encrypted, always available.</span>
+      <span id="typed-sub" data-text="Because Time &amp; Privacy Matter — print in under 60 seconds, 100% encrypted, always available.">Because Time &amp; Privacy Matter — print in under 60 seconds, 100% encrypted, always available.</span>
     </p>
 
     <div class="hero-cta">
@@ -123,7 +127,7 @@
     <span class="ticker-item"><span class="ticker-dot">●</span> Under 60 Seconds</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> Privacy First</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> No Sign-Up Needed</span>
-    <span class="ticker-item"><span class="ticker-dot">●</span> B&W + Color Print</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> B&amp;W + Color Print</span>
   </div>
 </div>
 
@@ -137,35 +141,30 @@
     </div>
 
     <div class="steps-grid">
-
       <div class="step-card reveal" data-delay="0">
         <div class="step-number" aria-hidden="true">01</div>
         <div class="step-icon" aria-hidden="true">📱</div>
         <h3>Scan the Kiosk QR</h3>
-        <p>Each SwiftPrint kiosk has a unique QR code. Just point your phone camera — no app download needed.</p>
+        <p>Each OneTapPrint kiosk has a unique QR code. Just point your phone camera — no app download needed.</p>
       </div>
-
       <div class="step-card reveal" data-delay="100">
         <div class="step-number" aria-hidden="true">02</div>
         <div class="step-icon" aria-hidden="true">📤</div>
         <h3>Upload Your Document</h3>
         <p>Choose any file from your phone, laptop or Google Drive. Supported: PDF, Word, Images. No account required.</p>
       </div>
-
       <div class="step-card reveal" data-delay="200">
         <div class="step-number" aria-hidden="true">03</div>
         <div class="step-icon" aria-hidden="true">⚙️</div>
         <h3>Set Print Preferences</h3>
         <p>Choose number of copies, Black &amp; White or color, single or double-sided, and orientation.</p>
       </div>
-
       <div class="step-card reveal" data-delay="300">
         <div class="step-number" aria-hidden="true">04</div>
         <div class="step-icon" aria-hidden="true">🗂️</div>
         <h3>Collect Your Print</h3>
-        <p>Enter the 4-digit OTP on the kiosk and collect your printout instantly. Your file is auto-deleted after printing.</p>
+        <p>Enter the 4-digit OTP on the kiosk and collect your printout instantly. Your file is auto-deleted right after.</p>
       </div>
-
     </div>
   </div>
 </section>
@@ -176,36 +175,26 @@
     <div class="reveal">
       <p class="section-label">Why Choose Us</p>
       <h2 class="section-title" id="why-title">Smarter Printing for a Busy World</h2>
-      <p class="section-sub">SwiftPrint is built around one principle — your documents, your privacy, your time.</p>
+      <p class="section-sub">OneTapPrint is built around one principle — your documents, your privacy, your time.</p>
     </div>
 
     <div class="features-layout" style="margin-top: 3rem;">
 
-      <!-- Kiosk Image with Animation -->
+      <!-- Kiosk Image Showcase -->
       <div class="features-left reveal">
         <div class="kiosk-showcase">
-          <!-- Orbit rings -->
           <div class="orbit-ring orbit-1" aria-hidden="true"></div>
           <div class="orbit-ring orbit-2" aria-hidden="true"></div>
           <div class="orbit-ring orbit-3" aria-hidden="true"></div>
-
-          <!-- Scanning beam -->
           <div class="scan-beam" aria-hidden="true"></div>
-
-          <!-- Glow spotlight beneath kiosk -->
           <div class="kiosk-spotlight" aria-hidden="true"></div>
 
-          <!-- The actual kiosk image -->
           <div class="kiosk-img-wrap">
-            <img
-              src="assets/images/kiosk-photo.png"
-              alt="OneTapPrint Self-Service Print Kiosk Machine"
-              class="kiosk-main-img"
-              draggable="false"
-            />
+            <img src="assets/images/kiosk-photo.png"
+                 alt="OneTapPrint Self-Service Print Kiosk Machine"
+                 class="kiosk-main-img" draggable="false" />
           </div>
 
-          <!-- Animated floating badges -->
           <div class="kiosk-badge badge-tl" aria-hidden="true">
             <span class="badge-icon">🔒</span>
             <div>
@@ -213,7 +202,6 @@
               <div class="badge-sub">End-to-end secure</div>
             </div>
           </div>
-
           <div class="kiosk-badge badge-tr" aria-hidden="true">
             <span class="badge-icon">⚡</span>
             <div>
@@ -221,7 +209,6 @@
               <div class="badge-sub">Instant print</div>
             </div>
           </div>
-
           <div class="kiosk-badge badge-bl" aria-hidden="true">
             <span class="badge-icon">🌙</span>
             <div>
@@ -229,7 +216,6 @@
               <div class="badge-sub">Always open</div>
             </div>
           </div>
-
           <div class="kiosk-badge badge-br" aria-hidden="true">
             <span class="badge-icon">🗑️</span>
             <div>
@@ -238,17 +224,15 @@
             </div>
           </div>
 
-          <!-- Orbiting dot particles -->
-          <div class="orbit-dot" style="--angle:0deg; --radius:160px; --dur:8s;" aria-hidden="true"></div>
-          <div class="orbit-dot" style="--angle:90deg; --radius:160px; --dur:8s; animation-delay:-2s;" aria-hidden="true"></div>
-          <div class="orbit-dot" style="--angle:180deg; --radius:160px; --dur:8s; animation-delay:-4s;" aria-hidden="true"></div>
-          <div class="orbit-dot" style="--angle:270deg; --radius:160px; --dur:8s; animation-delay:-6s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:0deg;--radius:160px;--dur:8s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:90deg;--radius:160px;--dur:8s;animation-delay:-2s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:180deg;--radius:160px;--dur:8s;animation-delay:-4s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:270deg;--radius:160px;--dur:8s;animation-delay:-6s;" aria-hidden="true"></div>
         </div>
       </div>
 
-      <!-- Feature list -->
+      <!-- Features List -->
       <div class="features-right">
-
         <div class="feature-item reveal" data-delay="0">
           <div class="feature-icon">🔐</div>
           <div class="feature-text">
@@ -256,7 +240,6 @@
             <p>Files are securely encrypted during transfer. Never shared, never stored — automatically deleted right after printing.</p>
           </div>
         </div>
-
         <div class="feature-item reveal" data-delay="100">
           <div class="feature-icon">⚡</div>
           <div class="feature-text">
@@ -264,7 +247,6 @@
             <p>From scanning the QR code to collecting your printout — the entire process is lightning-fast and seamless.</p>
           </div>
         </div>
-
         <div class="feature-item reveal" data-delay="200">
           <div class="feature-icon">🌙</div>
           <div class="feature-text">
@@ -272,7 +254,6 @@
             <p>Print even when all shops are shut — early mornings, late nights, weekends and public holidays. We never close.</p>
           </div>
         </div>
-
         <div class="feature-item reveal" data-delay="300">
           <div class="feature-icon">🤳</div>
           <div class="feature-text">
@@ -280,15 +261,13 @@
             <p>No touching shared devices, no pen drives, no staff required. Just scan, upload, and print from your own phone.</p>
           </div>
         </div>
-
         <div class="feature-item reveal" data-delay="400">
           <div class="feature-icon">🎓</div>
           <div class="feature-text">
             <h3>Perfect for Students &amp; Professionals</h3>
-            <p>Last-minute assignment? Boarding pass? ID proof? SwiftPrint has your back wherever our kiosk is installed.</p>
+            <p>Last-minute assignment? Boarding pass? ID proof? OneTapPrint at UIET has your back — anytime.</p>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -299,12 +278,11 @@
   <div class="section-inner">
     <div class="reveal" style="text-align:center;">
       <p class="section-label" style="justify-content:center;">The Difference</p>
-      <h2 class="section-title" id="compare-title">SwiftPrint vs. Traditional Shops</h2>
-      <p class="section-sub" style="margin: 0 auto;">See why self-service printing is the smarter choice.</p>
+      <h2 class="section-title" id="compare-title">OneTapPrint vs. Traditional Shops</h2>
+      <p class="section-sub" style="margin:0 auto;">See why self-service printing is the smarter choice.</p>
     </div>
 
     <div class="compare-wrap reveal" data-delay="150">
-
       <div class="compare-col bad">
         <div class="compare-header">❌ Traditional Print Shops</div>
         <div class="compare-row"><span class="compare-icon-bad">✕</span> Limited operating hours</div>
@@ -314,9 +292,8 @@
         <div class="compare-row"><span class="compare-icon-bad">✕</span> Requires human interaction</div>
         <div class="compare-row"><span class="compare-icon-bad">✕</span> Pen drives &amp; shared devices</div>
       </div>
-
       <div class="compare-col good">
-        <div class="compare-header">✅ SwiftPrint Kiosk</div>
+        <div class="compare-header">✅ OneTapPrint Kiosk</div>
         <div class="compare-row"><span class="compare-icon-good">✓</span> 24/7 access — always open</div>
         <div class="compare-row"><span class="compare-icon-good">✓</span> Instant print in under 60 sec</div>
         <div class="compare-row"><span class="compare-icon-good">✓</span> Private, encrypted &amp; auto-deleted</div>
@@ -324,7 +301,6 @@
         <div class="compare-row"><span class="compare-icon-good">✓</span> Zero human interaction needed</div>
         <div class="compare-row"><span class="compare-icon-good">✓</span> Just your phone — nothing else</div>
       </div>
-
     </div>
   </div>
 </section>
@@ -340,76 +316,63 @@
 
     <div class="location-layout">
 
-      <!-- Left: photo + info -->
+      <!-- Left: kiosk photo + info card -->
       <div class="location-info">
 
-        <!-- Kiosk photo -->
-        <div class="kiosk-photo-wrap reveal" data-delay="0" style="background: radial-gradient(circle at 50% 80%, rgba(0,87,255,0.15), transparent 70%), var(--bg-card); display:flex; align-items:center; justify-content:center; padding: 1.5rem;">
+        <div class="kiosk-photo-wrap reveal" data-delay="0">
           <img
             src="assets/images/kiosk-photo.png"
-            alt="OneTapPrint Kiosk Machine at our location"
+            alt="OneTapPrint Kiosk at UIET Building Raipur"
             loading="lazy"
-            style="width:100%; height:100%; object-fit:contain; object-position:center; filter: drop-shadow(0 20px 60px rgba(0,87,255,0.4)) drop-shadow(0 0 30px rgba(0,212,255,0.2)); animation: kiosk-loc-float 4s ease-in-out infinite;"
+            class="loc-kiosk-img"
           />
         </div>
 
-        <!-- Location details card -->
         <div class="location-details reveal" data-delay="100">
           <div class="loc-row">
-            <span class="loc-row-icon">📍</span>
+            <span class="loc-row-icon">🏛️</span>
             <div class="loc-row-text">
-              <strong>Address</strong>
-              <!-- Update this in config/contact.config.js → contact.address -->
-              Ground Floor, Tech Hub Building, MG Road,<br>Raipur, Chhattisgarh – 492001
+              <strong id="loc-title">UIET Building</strong>
+              <span id="loc-address">Ground Floor, UIET Building, MG Road, Raipur, Chhattisgarh – 492001</span>
             </div>
           </div>
           <div class="loc-row">
             <span class="loc-row-icon">🕐</span>
             <div class="loc-row-text">
               <strong>Operating Hours</strong>
-              24 Hours / 7 Days — Always Open
+              <span id="loc-hours">Open 24 / 7 — Always Available</span>
             </div>
           </div>
           <div class="loc-row">
             <span class="loc-row-icon">📞</span>
             <div class="loc-row-text">
               <strong>Helpline</strong>
-              <!-- Update phone in config/contact.config.js -->
-              <a href="tel:+919876543210" style="color:var(--blue-bright); text-decoration:none;">+91 98765 43210</a>
+              <a id="loc-phone" href="tel:+919876543210" style="color:var(--blue-bright);text-decoration:none;">+91 98765 43210</a>
             </div>
           </div>
           <div class="loc-row">
             <span class="loc-row-icon">💬</span>
             <div class="loc-row-text">
               <strong>WhatsApp Support</strong>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noopener" style="color:var(--accent-green); text-decoration:none;">Message us on WhatsApp</a>
+              <a id="loc-whatsapp" href="https://wa.me/919876543210" target="_blank" rel="noopener" style="color:var(--accent-green);text-decoration:none;">Message us on WhatsApp →</a>
             </div>
           </div>
         </div>
-
       </div>
 
-      <!-- Right: map embed -->
+      <!-- Right: map -->
       <div class="reveal" data-delay="200">
         <div class="map-wrap">
-          <!--
-            ── MAP LOCATION ─────────────────────────────────
-            To update kiosk location:
-            1. Open config/contact.config.js
-            2. Edit kiosk.latitude and kiosk.longitude
-            3. Update the src URL below with your coordinates:
-               Format: https://maps.google.com/maps?q=LAT,LNG&z=17&output=embed
-            ─────────────────────────────────────────────────
-          -->
           <iframe
+            id="map-iframe"
             src="https://maps.google.com/maps?q=21.2514,81.6296&z=17&output=embed"
             allowfullscreen
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="SwiftPrint Kiosk Location on Google Maps"
+            title="OneTapPrint Kiosk Location on Google Maps"
           ></iframe>
           <div class="map-overlay-label">
-            <span>🖨️</span> SwiftPrint Kiosk
+            <span>🖨️</span> <span id="map-label">OneTapPrint — UIET Building</span>
           </div>
         </div>
       </div>
@@ -429,7 +392,7 @@
 
     <div class="contact-grid" style="margin-top:3rem;">
 
-      <!-- Contact form -->
+      <!-- Contact Form -->
       <div class="reveal" data-delay="0">
         <div class="contact-form">
           <form id="contact-form" novalidate>
@@ -454,7 +417,7 @@
                   <option value="">Select topic</option>
                   <option value="General Inquiry">General Inquiry</option>
                   <option value="Technical Support">Technical Support</option>
-                  <option value="Partnership / Franchise">Partnership / Franchise</option>
+                  <option value="Partnership">Partnership / Franchise</option>
                   <option value="Kiosk Installation">Kiosk Installation Request</option>
                   <option value="Feedback">Feedback</option>
                 </select>
@@ -474,66 +437,48 @@
         </div>
       </div>
 
-      <!-- Contact info -->
+      <!-- Contact Info Panel -->
       <div class="contact-info reveal" data-delay="150">
 
         <div class="contact-card">
           <div class="cc-title">Direct Contact</div>
-          <!-- Update these in config/contact.config.js -->
-          <a href="mailto:hello@swiftprint.in" class="cc-item">
+          <a id="cc-email" href="mailto:hello@onetapprint.in" class="cc-item">
             <div class="cc-icon">📧</div>
-            hello@swiftprint.in
+            <span>hello@onetapprint.in</span>
           </a>
-          <a href="mailto:support@swiftprint.in" class="cc-item">
+          <a id="cc-email-support" href="mailto:support@onetapprint.in" class="cc-item">
             <div class="cc-icon">🛠️</div>
-            support@swiftprint.in
+            <span>support@onetapprint.in</span>
           </a>
-          <a href="tel:+919876543210" class="cc-item">
+          <a id="cc-phone" href="tel:+919876543210" class="cc-item">
             <div class="cc-icon">📞</div>
-            +91 98765 43210
+            <span>+91 98765 43210</span>
           </a>
-          <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="cc-item">
+          <a id="cc-whatsapp" href="https://wa.me/919876543210" target="_blank" rel="noopener" class="cc-item">
             <div class="cc-icon">💬</div>
-            WhatsApp Us
+            <span>WhatsApp Us</span>
           </a>
         </div>
 
         <div class="contact-card">
           <div class="cc-title">Follow Us</div>
-          <!-- Update social URLs in config/contact.config.js -->
-          <div class="social-row">
-            <a href="https://instagram.com/swiftprint.in" target="_blank" rel="noopener" class="social-pill">
-              📸 Instagram
-            </a>
-            <a href="https://twitter.com/swiftprintin" target="_blank" rel="noopener" class="social-pill">
-              🐦 Twitter / X
-            </a>
-            <a href="https://linkedin.com/company/swiftprint" target="_blank" rel="noopener" class="social-pill">
-              💼 LinkedIn
-            </a>
-            <a href="https://youtube.com/@swiftprint" target="_blank" rel="noopener" class="social-pill">
-              ▶️ YouTube
-            </a>
-            <a href="https://facebook.com/swiftprintin" target="_blank" rel="noopener" class="social-pill">
-              👤 Facebook
-            </a>
+          <div class="social-row" id="social-row">
+            <!-- Populated by JS from config.js -->
           </div>
         </div>
 
         <div class="contact-card">
           <div class="cc-title">Kiosk Location</div>
-          <div class="cc-item" style="color: var(--white-60);">
+          <div class="cc-item" style="color:var(--white-60);">
             <div class="cc-icon">📍</div>
             <div>
-              Ground Floor, Tech Hub Building,<br>
-              MG Road, Raipur, CG — 492001<br>
-              <small style="color: var(--accent-green);">Open 24/7</small>
+              <span id="cc-address">Ground Floor, UIET Building, MG Road, Raipur, CG – 492001</span><br>
+              <small style="color:var(--accent-green);">Open 24/7</small>
             </div>
           </div>
         </div>
 
       </div>
-
     </div>
   </div>
 </section>
@@ -541,13 +486,12 @@
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
 <footer>
   <div class="footer-inner">
-
     <div>
       <div class="footer-brand-name">
-        Swift<span class="accent">Print</span>
+        OneTap<span class="accent">Print</span>
       </div>
       <p class="footer-tagline-sm">FAST &amp; SECURE PRINT</p>
-      <p class="footer-desc">Because time and privacy matter. Self-service, contactless, encrypted print kiosk — available 24 hours a day, 7 days a week.</p>
+      <p class="footer-desc">Because Time &amp; Privacy Matter. Self-service, contactless, encrypted print kiosk — available 24 hours a day, 7 days a week at UIET Building, Raipur.</p>
     </div>
 
     <div class="footer-col">
@@ -559,27 +503,22 @@
       <a href="#contact">Contact Us</a>
     </div>
 
-    <div class="footer-col">
+    <div class="footer-col" id="footer-social-col">
       <h4>Connect</h4>
-      <a href="https://instagram.com/swiftprint.in" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://twitter.com/swiftprintin" target="_blank" rel="noopener">Twitter / X</a>
-      <a href="https://linkedin.com/company/swiftprint" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://youtube.com/@swiftprint" target="_blank" rel="noopener">YouTube</a>
-      <a href="https://facebook.com/swiftprintin" target="_blank" rel="noopener">Facebook</a>
+      <!-- Populated by JS from config.js -->
     </div>
-
   </div>
 
   <div class="footer-bottom">
-    <span>© 2025 SwiftPrint. All rights reserved.</span>
-    <span class="footer-tagline-sm">Because time and privacy matter.</span>
+    <span id="footer-copy">© 2025 OneTapPrint. All rights reserved.</span>
+    <span class="footer-tagline-sm">Because Time &amp; Privacy Matter.</span>
     <span>Raipur, Chhattisgarh, India</span>
   </div>
 </footer>
-<script src="config.js"></script>
-<script src="js/main.js" defer></script>
-<!-- ── SCRIPTS ────────────────────────────────────────────── -->
 
+<!-- ── SCRIPTS ────────────────────────────────────────────── -->
+<!-- config.js already loaded in <head> -->
+<script src="js/main.js"></script>
 
 </body>
 </html>

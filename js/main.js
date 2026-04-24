@@ -1,325 +1,322 @@
 /* ============================================================
-   ONE TAP PRINT — MAIN.JS (v2)
-   Custom cursor · Particles · Counter · Navbar · Mobile · Form
+   ONETAPPRINT — MAIN.JS
+   Reads from SITE_CONFIG (config.js) and drives the whole page.
    ============================================================ */
 
 "use strict";
 
-/* ── LOAD CONFIG ─────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", () => {
-  if (typeof SITE_CONFIG !== "undefined") {
-    const s = SITE_CONFIG;
+/* ── 1. INJECT CONFIG INTO DOM ─────────────────────────────── */
+(function applyConfig() {
+  if (typeof SITE_CONFIG === "undefined") return;
+  const C = SITE_CONFIG;
 
-    // Location
-    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-    const setHref = (id, val) => { const el = document.getElementById(id); if (el) el.href = val; };
+  // Page title & meta
+  document.title = `${C.brand.name} — ${C.brand.tagline}`;
 
-    setText("conf-loc-title",   s.location.title);
-    setText("conf-loc-address", s.location.address);
-    setText("conf-loc-hours",   s.location.hours);
-    const mapFrame = document.getElementById("conf-loc-map");
-    if (mapFrame) mapFrame.src = s.location.mapEmbedUrl;
-    setHref("conf-loc-btn",     s.location.mapEmbedUrl.replace("output=embed", "output=html"));
+  // Location section
+  _setText("loc-title",    C.location.title);
+  _setText("loc-address",  C.location.address);
+  _setText("loc-hours",    C.location.hours + " — Always Available");
+  _setHref("loc-phone",    "tel:" + C.contact.phone, C.contact.phone);
+  _setHref("loc-whatsapp", C.contact.whatsappLink, "Message us on WhatsApp →");
 
-    // Contact
-    const emailCard = document.getElementById("conf-email-card");
-    if (emailCard) emailCard.href = "mailto:" + s.contact.email;
-    setText("conf-email", s.contact.email);
+  // Map iframe
+  const mapIframe = document.getElementById("map-iframe");
+  if (mapIframe) mapIframe.src = C.location.mapEmbedUrl;
+  _setText("map-label", `${C.brand.name} — ${C.location.title}`);
 
-    const phoneCard = document.getElementById("conf-phone-card");
-    if (phoneCard) phoneCard.href = s.contact.whatsappLink;
-    setText("conf-phone", s.contact.phone);
+  // Contact cards
+  _setHref("cc-email",         "mailto:" + C.contact.email,        C.contact.email);
+  _setHref("cc-email-support",  "mailto:" + C.contact.emailSupport, C.contact.emailSupport);
+  _setHref("cc-phone",          "tel:" + C.contact.phone,           C.contact.phone);
+  if (C.contact.whatsappLink) {
+    const wa = document.getElementById("cc-whatsapp");
+    if (wa) wa.href = C.contact.whatsappLink;
+  }
+  _setText("cc-address", C.location.address);
 
-    // Social
-    setHref("conf-insta", s.social.instagram);
-    setHref("conf-twit",  s.social.twitter);
-    setHref("conf-link",  s.social.linkedin);
+  // Footer copyright
+  _setText("footer-copy", `© ${C.brand.year} ${C.brand.name}. All rights reserved.`);
+
+  // Social links — contact card
+  const socialDefs = [
+    { key: "instagram", icon: "📸", label: "Instagram" },
+    { key: "twitter",   icon: "🐦", label: "Twitter / X" },
+    { key: "linkedin",  icon: "💼", label: "LinkedIn" },
+    { key: "youtube",   icon: "▶️", label: "YouTube" },
+    { key: "facebook",  icon: "👤", label: "Facebook" },
+  ];
+
+  const socialRow = document.getElementById("social-row");
+  if (socialRow) {
+    socialRow.innerHTML = "";
+    socialDefs.forEach(({ key, icon, label }) => {
+      const url = C.social[key];
+      if (!url) return;
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.className = "social-pill";
+      a.innerHTML = `${icon} ${label}`;
+      socialRow.appendChild(a);
+    });
+  }
+
+  // Footer social column
+  const footerSocial = document.getElementById("footer-social-col");
+  if (footerSocial) {
+    footerSocial.innerHTML = "<h4>Connect</h4>";
+    socialDefs.forEach(({ key, icon, label }) => {
+      const url = C.social[key];
+      if (!url) return;
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = `${icon} ${label}`;
+      footerSocial.appendChild(a);
+    });
+  }
+
+  function _setText(id, text) {
+    const el = document.getElementById(id);
+    if (el && text) el.textContent = text;
+  }
+  function _setHref(id, href, text) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (href) el.href = href;
+    if (text) {
+      const span = el.querySelector("span");
+      if (span) span.textContent = text;
+      else if (!el.querySelector("div")) el.textContent = text;
+    }
+  }
+})();
+
+/* ── 2. LOADER ──────────────────────────────────────────────── */
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if (loader) loader.classList.add("hidden");
+  }, 1900);
+});
+
+/* ── 3. CUSTOM CURSOR ───────────────────────────────────────── */
+const cursorDot  = document.querySelector(".cursor-dot");
+const cursorRing = document.querySelector(".cursor-ring");
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+document.addEventListener("mousemove", e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  if (cursorDot) {
+    cursorDot.style.left = mouseX + "px";
+    cursorDot.style.top  = mouseY + "px";
   }
 });
 
-/* ── CUSTOM CURSOR ──────────────────────────────────────────── */
-const cursorDot  = document.getElementById("cursor-dot");
-const cursorRing = document.getElementById("cursor-ring");
-
-if (cursorDot && cursorRing && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener("mousemove", e => {
-    mx = e.clientX; my = e.clientY;
-    cursorDot.style.left = mx + "px";
-    cursorDot.style.top  = my + "px";
-  }, { passive: true });
-
-  (function animateRing() {
-    rx += (mx - rx) * 0.11;
-    ry += (my - ry) * 0.11;
-    cursorRing.style.left = rx + "px";
-    cursorRing.style.top  = ry + "px";
-    requestAnimationFrame(animateRing);
-  })();
-
-  document.querySelectorAll("a, button, .step-card, .feat-card, .contact-card").forEach(el => {
-    el.addEventListener("mouseenter", () => cursorRing.classList.add("hover"));
-    el.addEventListener("mouseleave", () => cursorRing.classList.remove("hover"));
-  });
-}
-
-/* ── NAVBAR SCROLL + PROGRESS ───────────────────────────────── */
-const navbar      = document.getElementById("navbar");
-const navProgress = document.getElementById("nav-progress");
-
-window.addEventListener("scroll", () => {
-  navbar.classList.toggle("scrolled", window.scrollY > 40);
-
-  if (navProgress) {
-    const total = document.body.scrollHeight - window.innerHeight;
-    navProgress.style.width = ((window.scrollY / total) * 100) + "%";
+(function animateCursor() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  if (cursorRing) {
+    cursorRing.style.left = ringX + "px";
+    cursorRing.style.top  = ringY + "px";
   }
+  requestAnimationFrame(animateCursor);
+})();
+
+document.querySelectorAll("a, button, .step-card, .feature-item, .social-pill").forEach(el => {
+  el.addEventListener("mouseenter", () => cursorRing?.classList.add("hover"));
+  el.addEventListener("mouseleave", () => cursorRing?.classList.remove("hover"));
+});
+
+/* ── 4. SCROLL PROGRESS BAR ─────────────────────────────────── */
+const scrollBar = document.getElementById("scroll-bar");
+window.addEventListener("scroll", () => {
+  const total = document.body.scrollHeight - window.innerHeight;
+  if (scrollBar) scrollBar.style.width = ((window.scrollY / total) * 100) + "%";
 }, { passive: true });
 
-/* ── MOBILE MENU ────────────────────────────────────────────── */
-const hamburger = document.querySelector(".hamburger");
-const mobileMenu = document.getElementById("mobile-menu");
+/* ── 5. NAVBAR SCROLL ───────────────────────────────────────── */
+const navbar = document.getElementById("navbar");
+window.addEventListener("scroll", () => {
+  if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 50);
+}, { passive: true });
 
-if (hamburger && mobileMenu) {
-  const spans = hamburger.querySelectorAll("span");
+/* ── 6. MOBILE NAV ──────────────────────────────────────────── */
+const hamburger = document.querySelector(".nav-hamburger");
+const navLinks  = document.querySelector(".nav-links");
 
+if (hamburger && navLinks) {
   hamburger.addEventListener("click", () => {
-    const open = mobileMenu.classList.toggle("open");
-    hamburger.setAttribute("aria-expanded", open);
-    mobileMenu.setAttribute("aria-hidden", !open);
-
+    const open = navLinks.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", String(open));
+    const spans = hamburger.querySelectorAll("span");
     if (open) {
-      spans[0].style.cssText = "transform: translateY(7px) rotate(45deg)";
-      spans[1].style.opacity = "0";
-      spans[2].style.cssText = "transform: translateY(-7px) rotate(-45deg)";
+      spans[0].style.transform = "translateY(7px) rotate(45deg)";
+      spans[1].style.opacity   = "0";
+      spans[2].style.transform = "translateY(-7px) rotate(-45deg)";
     } else {
-      spans.forEach(s => s.style.cssText = "");
+      spans.forEach(s => { s.style.transform = ""; s.style.opacity = ""; });
     }
   });
-
-  mobileMenu.querySelectorAll("a").forEach(a => {
+  navLinks.querySelectorAll("a").forEach(a =>
     a.addEventListener("click", () => {
-      mobileMenu.classList.remove("open");
-      mobileMenu.setAttribute("aria-hidden", "true");
+      navLinks.classList.remove("open");
       hamburger.setAttribute("aria-expanded", "false");
-      spans.forEach(s => s.style.cssText = "");
-    });
-  });
+      hamburger.querySelectorAll("span").forEach(s => { s.style.transform = ""; s.style.opacity = ""; });
+    })
+  );
 }
 
-/* ── SCROLL REVEAL ──────────────────────────────────────────── */
-const revealObs = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-      revealObs.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: "0px 0px -60px 0px" });
-
-document.querySelectorAll(".reveal").forEach(el => revealObs.observe(el));
-
-/* ── PARTICLE SYSTEM ────────────────────────────────────────── */
+/* ── 7. PARTICLES CANVAS ────────────────────────────────────── */
 (function initParticles() {
-  const container = document.getElementById("hero-particles");
-  if (!container) return;
-
-  const canvas = document.createElement("canvas");
+  const canvas = document.getElementById("particles-canvas");
+  if (!canvas) return;
   const ctx = canvas.getContext("2d");
-  container.appendChild(canvas);
-
-  let W, H, particles = [];
-  const COUNT = window.innerWidth < 768 ? 35 : 70;
+  let W, H;
 
   function resize() {
-    W = canvas.width  = container.offsetWidth;
-    H = canvas.height = container.offsetHeight;
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
   }
-
   resize();
   window.addEventListener("resize", resize, { passive: true });
 
-  for (let i = 0; i < COUNT; i++) {
-    particles.push({
-      x: Math.random() * 1000,
-      y: Math.random() * 800,
-      r: Math.random() * 1.5 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      opacity: Math.random() * 0.4 + 0.1,
-    });
-  }
+  const COUNT = window.innerWidth < 768 ? 40 : 80;
+  const particles = Array.from({ length: COUNT }, () => ({
+    x:  Math.random() * 1200,
+    y:  Math.random() * 900,
+    r:  Math.random() * 1.8 + 0.4,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    o:  Math.random() * 0.5 + 0.15,
+  }));
 
-  function draw() {
+  (function draw() {
     ctx.clearRect(0, 0, W, H);
-
     particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-
+      p.x = (p.x + p.vx + W) % W;
+      p.y = (p.y + p.vy + H) % H;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(100, 255, 218, ${p.opacity})`;
+      ctx.fillStyle = `rgba(0,150,255,${p.o})`;
       ctx.fill();
     });
-
-    // Draw connections
+    // connections
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 130) {
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < 120) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(100, 255, 218, ${(1 - dist / 130) * 0.12})`;
+          ctx.strokeStyle = `rgba(0,100,255,${(1 - d / 120) * 0.18})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
       }
     }
-
     requestAnimationFrame(draw);
-  }
-  draw();
+  })();
 })();
 
-/* ── COUNTER ANIMATION ──────────────────────────────────────── */
-function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-
-function animateCounter(el, target) {
-  const duration = 1800;
-  let startTime = null;
-
-  function step(ts) {
-    if (!startTime) startTime = ts;
-    const prog = Math.min((ts - startTime) / duration, 1);
-    el.textContent = Math.floor(easeOutCubic(prog) * target);
-    if (prog < 1) requestAnimationFrame(step);
-    else el.textContent = target;
-  }
-  requestAnimationFrame(step);
-}
-
-const counterObs = new IntersectionObserver(entries => {
+/* ── 8. SCROLL REVEAL ───────────────────────────────────────── */
+const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const target = parseInt(el.dataset.target, 10);
-      if (!isNaN(target)) animateCounter(el, target);
-      counterObs.unobserve(el);
-    }
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    setTimeout(() => el.classList.add("visible"), Number(el.dataset.delay) || 0);
+    revealObserver.unobserve(el);
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+/* ── 9. COUNTER ANIMATION ───────────────────────────────────── */
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el  = entry.target;
+    const max = parseInt(el.dataset.count, 10);
+    let start = null;
+    (function tick(ts) {
+      if (!start) start = ts;
+      const pct  = Math.min((ts - start) / 1800, 1);
+      const ease = 1 - Math.pow(1 - pct, 3);
+      el.textContent = Math.floor(ease * max);
+      if (pct < 1) requestAnimationFrame(tick);
+      else el.textContent = max;
+    })(performance.now());
+    counterObserver.unobserve(el);
   });
 }, { threshold: 0.5 });
 
-document.querySelectorAll(".hstat-num[data-target]").forEach(el => counterObs.observe(el));
+document.querySelectorAll(".stat-num").forEach(el => counterObserver.observe(el));
 
-/* ── TICKER DUPLICATION ─────────────────────────────────────── */
-const tickerTrack = document.querySelector(".ticker-track");
-if (tickerTrack && !tickerTrack.dataset.duped) {
-  tickerTrack.innerHTML += tickerTrack.innerHTML;
-  tickerTrack.dataset.duped = "1";
+/* ── 10. TICKER DUPLICATION ─────────────────────────────────── */
+const track = document.querySelector(".ticker-track");
+if (track) track.innerHTML += track.innerHTML;
+
+/* ── 11. TYPED TEXT ─────────────────────────────────────────── */
+const typedEl = document.getElementById("typed-sub");
+if (typedEl) {
+  const text = typedEl.getAttribute("data-text") || typedEl.textContent;
+  typedEl.textContent = "";
+  let i = 0;
+  const type = () => {
+    if (i < text.length) { typedEl.textContent += text[i++]; setTimeout(type, 38); }
+  };
+  setTimeout(type, 1600);
 }
 
-/* ── FOOTER YEAR ────────────────────────────────────────────── */
-const yearEl = document.getElementById("year");
-if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-/* ── SMOOTH SCROLL WITH NAV OFFSET ─────────────────────────── */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener("click", function (e) {
-    const href = this.getAttribute("href");
-    if (href === "#") return;
-    const target = document.querySelector(href);
-    if (!target) return;
+/* ── 12. CONTACT FORM ───────────────────────────────────────── */
+const form = document.getElementById("contact-form");
+if (form) {
+  form.addEventListener("submit", async e => {
     e.preventDefault();
-    const offset = (navbar?.offsetHeight || 75) + 12;
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: "smooth" });
-  });
-});
-
-/* ── HERO ORBS PARALLAX (mouse) ─────────────────────────────── */
-const orbs = document.querySelectorAll(".orb");
-if (orbs.length && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-  document.addEventListener("mousemove", e => {
-    const x = (e.clientX / window.innerWidth - 0.5);
-    const y = (e.clientY / window.innerHeight - 0.5);
-    orbs.forEach((orb, i) => {
-      const strength = (i + 1) * 12;
-      const sign = i % 2 === 0 ? 1 : -1;
-      orb.style.transform = `translate(${x * strength * sign}px, ${y * strength * sign}px)`;
-    });
-  }, { passive: true });
-}
-
-/* ── STEP CARDS STAGGER ON SCROLL ───────────────────────────── */
-document.querySelectorAll(".step-card").forEach((card, i) => {
-  card.style.transitionDelay = (0.08 * i) + "s";
-});
-
-/* ── CONTACT FORM ───────────────────────────────────────────── */
-const contactForm = document.getElementById("contact-form");
-const formSuccess = document.getElementById("form-success");
-
-if (contactForm) {
-  contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const btn = contactForm.querySelector("button[type=submit]");
-
-    const name    = contactForm.querySelector('input[name="name"]')?.value?.trim() || "";
-    const email   = contactForm.querySelector('input[name="email"]')?.value?.trim() || "";
-    const message = contactForm.querySelector('textarea[name="message"]')?.value?.trim() || "";
-
-    if (!name || !email || !message) {
-      showFormError("Please fill in all fields.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showFormError("Please enter a valid email address.");
-      return;
-    }
-
-    btn.textContent = "Sending…";
+    const btn = form.querySelector(".btn-submit");
     btn.disabled = true;
+    btn.innerHTML = "<span>⏳</span> Sending…";
+
+    const data = {
+      name:    form.name?.value    || "",
+      email:   form.email?.value   || "",
+      phone:   form.phone?.value   || "",
+      subject: form.subject?.value || "",
+      message: form.message?.value || "",
+    };
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify(data),
       });
-
       if (res.ok) {
-        contactForm.hidden = true;
-        if (formSuccess) formSuccess.hidden = false;
-      } else {
-        btn.textContent = "Try Again";
-        btn.disabled = false;
-        showFormError("Something went wrong. Email us directly.");
-      }
+        form.style.display = "none";
+        document.getElementById("form-success").style.display = "block";
+      } else { throw new Error("server"); }
     } catch {
-      const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-      window.location.href = `mailto:hello@onetapprint.in?subject=Enquiry&body=${encodeURIComponent(body)}`;
-      btn.textContent = "Send Message";
+      const to   = (typeof SITE_CONFIG !== "undefined") ? SITE_CONFIG.contact.email : "hello@onetapprint.in";
+      const body = `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}\nMessage: ${data.message}`;
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(data.subject || "Enquiry")}&body=${encodeURIComponent(body)}`;
       btn.disabled = false;
+      btn.innerHTML = "<span>✉️</span> Send Message";
     }
   });
 }
 
-function showFormError(msg) {
-  let el = document.querySelector(".form-error");
-  if (!el) {
-    el = document.createElement("p");
-    el.className = "form-error";
-    el.style.cssText = "color:#f87171;font-size:0.84rem;";
-    contactForm.insertBefore(el, contactForm.querySelector("button"));
-  }
-  el.textContent = msg;
-  setTimeout(() => el?.remove(), 5000);
+/* ── 13. HERO GLITCH ────────────────────────────────────────── */
+const glitchEl = document.querySelector(".hero-title .line-blue");
+if (glitchEl) {
+  setInterval(() => {
+    glitchEl.style.textShadow = `
+      ${(Math.random() - 0.5) * 8}px 0 rgba(0,212,255,.8),
+      ${(Math.random() - 0.5) * 8}px 0 rgba(0,87,255,.6)`;
+    setTimeout(() => { glitchEl.style.textShadow = ""; }, 110);
+  }, 3200);
 }
