@@ -8,7 +8,7 @@
 const SITE_CONFIG = {
   // ── KIOSK LOCATION ──
   location: {
-    title: "Tech Hub Building",
+    title: "UIET Building",
     address: "Ground Floor, MG Road, Raipur, CG – 492001",
     hours: "Open 24/7",
     // Google Maps Embed URL

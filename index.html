@@ -3,587 +3,582 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>One Tap Print — Fast. Private. Always On.</title>
-  <meta name="description" content="Print any document in under 60 seconds. Self-service kiosks that auto-delete your files. Fast, private, 24/7." />
+  <title>SwiftPrint — Fast & Secure Print Kiosk</title>
+  <meta name="description" content="SwiftPrint — Instant, secure, 24/7 self-service print kiosk. Because time and privacy matter." />
+  <meta name="theme-color" content="#010810" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SwiftPrint — Fast & Secure Print" />
+  <meta property="og:description" content="Print in under 60 seconds. 100% encrypted. 24/7 available." />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon (inline SVG data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <!-- Cursor -->
-  <div class="cursor-dot" id="cursor-dot"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
+<!-- ── LOADER ─────────────────────────────────────────────── -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-logo">Swift<span style="color:#00d4ff">Print</span></div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
 
-  <!-- Noise grain overlay -->
-  <div class="noise-overlay" aria-hidden="true"></div>
+<!-- ── SCROLL PROGRESS ───────────────────────────────────── -->
+<div id="scroll-bar" aria-hidden="true"></div>
 
-  <!-- ═══ NAVBAR ═══ -->
-  <nav id="navbar" role="navigation" aria-label="Main navigation">
-    <div class="nav-inner">
-      <a href="#" class="nav-logo" aria-label="One Tap Print">
-        <span class="logo-mark">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <circle cx="11" cy="11" r="9" stroke="#64FFDA" stroke-width="2"/>
-            <circle cx="11" cy="11" r="4" fill="#64FFDA"/>
-          </svg>
-        </span>
-        One<span class="logo-accent">Tap</span>Print
+<!-- ── CUSTOM CURSOR ─────────────────────────────────────── -->
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<!-- ── NAVBAR ────────────────────────────────────────────── -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="SwiftPrint Home">
+    <span class="logo-main">Swift</span><span class="logo-accent">Print</span>
+  </a>
+
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#why-us">Why Us</a></li>
+    <li><a href="#comparison">vs. Traditional</a></li>
+    <li><a href="#location">Find Us</a></li>
+    <li><a href="#contact" class="btn-nav">Contact</a></li>
+  </ul>
+
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section id="hero" aria-label="Hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Kiosk Now Active · Available 24/7
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line-white">Fast &amp;</span><br>
+      <span class="line-blue">Secure Print.</span>
+    </h1>
+
+    <p class="hero-tagline">
+      <span id="typed-sub" data-text="Because time and privacy matter — print in under 60 seconds, 100% encrypted, always available.">Because time and privacy matter — print in under 60 seconds, 100% encrypted, always available.</span>
+    </p>
+
+    <div class="hero-cta">
+      <a href="#how-it-works" class="btn-primary">
+        <span>🖨️</span> How to Print
       </a>
-      <ul class="nav-links" role="list">
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#location">Location</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <a href="#how-it-works" class="btn btn-glow">Start Printing →</a>
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <a href="#location" class="btn-secondary">
+        <span>📍</span> Find Our Kiosk
+      </a>
     </div>
-    <div class="nav-progress" id="nav-progress"></div>
-  </nav>
 
-  <!-- Mobile menu -->
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-    <div class="mobile-menu-inner">
-      <ul role="list">
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#location">Location</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <a href="#how-it-works" class="btn btn-glow">Start Printing →</a>
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <span class="stat-num" data-count="60">60</span>
+        <span class="stat-suf">sec</span>
+        <span class="stat-lbl">Print Time</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" data-count="100">100</span>
+        <span class="stat-suf">%</span>
+        <span class="stat-lbl">Secure &amp; Encrypted</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" data-count="24">24</span>
+        <span class="stat-suf">/7</span>
+        <span class="stat-lbl">Always Open</span>
+      </div>
     </div>
   </div>
 
-  <!-- ═══ HERO ═══ -->
-  <section id="hero" aria-labelledby="hero-heading">
-    <!-- Animated background elements -->
-    <div class="hero-bg-grid" aria-hidden="true"></div>
-    <div class="hero-particles" id="hero-particles" aria-hidden="true"></div>
-    <div class="orb orb-1" aria-hidden="true"></div>
-    <div class="orb orb-2" aria-hidden="true"></div>
-    <div class="orb orb-3" aria-hidden="true"></div>
+  <div class="scroll-down" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-    <div class="container hero-split">
+<!-- ── TICKER STRIP ───────────────────────────────────────── -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot">●</span> Fast Print</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Secure Encryption</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> 24/7 Available</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Zero Queue</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Contactless</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Auto-Delete Files</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Under 60 Seconds</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Privacy First</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> No Sign-Up Needed</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> B&W + Color Print</span>
+  </div>
+</div>
 
-      <!-- LEFT: Kiosk machine visual -->
-      <div class="hero-left reveal">
-        <div class="kiosk-scene">
+<!-- ── HOW IT WORKS ───────────────────────────────────────── -->
+<section id="how-it-works" aria-labelledby="how-title">
+  <div class="section-inner">
+    <div class="steps-header reveal">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title" id="how-title">Print in 4 Simple Steps</h2>
+      <p class="section-sub">Fast. Secure. Completely contactless. No sign-up, no staff, no waiting.</p>
+    </div>
 
-          <!-- Ambient rings -->
-          <div class="kiosk-ring ring-1" aria-hidden="true"></div>
-          <div class="kiosk-ring ring-2" aria-hidden="true"></div>
-          <div class="kiosk-ring ring-3" aria-hidden="true"></div>
+    <div class="steps-grid">
 
-          <!-- Main kiosk SVG machine -->
-          <div class="kiosk-body" aria-label="One Tap Print Kiosk Machine">
-            <svg class="kiosk-svg" viewBox="0 0 260 440" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Stand base -->
-              <rect x="90" y="400" width="80" height="14" rx="7" fill="#0D2137"/>
-              <rect x="116" y="370" width="28" height="34" rx="4" fill="#0D2137"/>
+      <div class="step-card reveal" data-delay="0">
+        <div class="step-number" aria-hidden="true">01</div>
+        <div class="step-icon" aria-hidden="true">📱</div>
+        <h3>Scan the Kiosk QR</h3>
+        <p>Each SwiftPrint kiosk has a unique QR code. Just point your phone camera — no app download needed.</p>
+      </div>
 
-              <!-- Main body -->
-              <rect x="20" y="30" width="220" height="355" rx="18" fill="url(#bodyGrad)"/>
-              <!-- Body border glow -->
-              <rect x="20" y="30" width="220" height="355" rx="18" stroke="url(#borderGlow)" stroke-width="1.5" fill="none"/>
+      <div class="step-card reveal" data-delay="100">
+        <div class="step-number" aria-hidden="true">02</div>
+        <div class="step-icon" aria-hidden="true">📤</div>
+        <h3>Upload Your Document</h3>
+        <p>Choose any file from your phone, laptop or Google Drive. Supported: PDF, Word, Images. No account required.</p>
+      </div>
 
-              <!-- Top brand strip -->
-              <rect x="20" y="30" width="220" height="38" rx="18" fill="url(#topStrip)"/>
-              <rect x="20" y="50" width="220" height="18" fill="url(#topStrip)"/>
+      <div class="step-card reveal" data-delay="200">
+        <div class="step-number" aria-hidden="true">03</div>
+        <div class="step-icon" aria-hidden="true">⚙️</div>
+        <h3>Set Print Preferences</h3>
+        <p>Choose number of copies, Black &amp; White or color, single or double-sided, and orientation.</p>
+      </div>
 
-              <!-- Brand name on machine -->
-              <text x="130" y="57" text-anchor="middle" fill="#64FFDA" font-family="Syne, sans-serif" font-weight="800" font-size="13" letter-spacing="1">ONE TAP PRINT</text>
+      <div class="step-card reveal" data-delay="300">
+        <div class="step-number" aria-hidden="true">04</div>
+        <div class="step-icon" aria-hidden="true">🗂️</div>
+        <h3>Collect Your Print</h3>
+        <p>Enter the 4-digit OTP on the kiosk and collect your printout instantly. Your file is auto-deleted after printing.</p>
+      </div>
 
-              <!-- Screen bezel -->
-              <rect x="36" y="82" width="188" height="198" rx="10" fill="#020B18"/>
-              <!-- Screen glow border -->
-              <rect x="36" y="82" width="188" height="198" rx="10" stroke="rgba(100,255,218,0.25)" stroke-width="1" fill="none"/>
+    </div>
+  </div>
+</section>
 
-              <!-- Screen content: header bar -->
-              <rect x="36" y="82" width="188" height="28" rx="10" fill="#0A1F35"/>
-              <rect x="36" y="96" width="188" height="14" fill="#0A1F35"/>
-              <circle cx="52" cy="96" r="5" fill="#FF5F57"/>
-              <circle cx="68" cy="96" r="5" fill="#FEBC2E"/>
-              <circle cx="84" cy="96" r="5" fill="#28C840"/>
-              <text x="190" y="100" text-anchor="end" fill="rgba(100,255,218,0.7)" font-family="DM Sans, sans-serif" font-size="9">SECURE ●</text>
+<!-- ── WHY US ─────────────────────────────────────────────── -->
+<section id="why-us" aria-labelledby="why-title">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Why Choose Us</p>
+      <h2 class="section-title" id="why-title">Smarter Printing for a Busy World</h2>
+      <p class="section-sub">SwiftPrint is built around one principle — your documents, your privacy, your time.</p>
+    </div>
 
-              <!-- QR Code area on screen -->
-              <rect x="68" y="122" width="84" height="84" rx="6" fill="#071526"/>
-              <rect x="68" y="122" width="84" height="84" rx="6" stroke="rgba(100,255,218,0.3)" stroke-width="1" fill="none"/>
-              <!-- QR mini squares -->
-              <rect x="76" y="130" width="18" height="18" rx="2" fill="rgba(100,255,218,0.8)"/>
-              <rect x="79" y="133" width="12" height="12" rx="1" fill="#071526"/>
-              <rect x="82" y="136" width="6" height="6" rx="0.5" fill="rgba(100,255,218,0.9)"/>
+    <div class="features-layout" style="margin-top: 3rem;">
 
-              <rect x="126" y="130" width="18" height="18" rx="2" fill="rgba(100,255,218,0.8)"/>
-              <rect x="129" y="133" width="12" height="12" rx="1" fill="#071526"/>
-              <rect x="132" y="136" width="6" height="6" rx="0.5" fill="rgba(100,255,218,0.9)"/>
+      <!-- Kiosk Image with Animation -->
+      <div class="features-left reveal">
+        <div class="kiosk-showcase">
+          <!-- Orbit rings -->
+          <div class="orbit-ring orbit-1" aria-hidden="true"></div>
+          <div class="orbit-ring orbit-2" aria-hidden="true"></div>
+          <div class="orbit-ring orbit-3" aria-hidden="true"></div>
 
-              <rect x="76" y="180" width="18" height="18" rx="2" fill="rgba(100,255,218,0.8)"/>
-              <rect x="79" y="183" width="12" height="12" rx="1" fill="#071526"/>
-              <rect x="82" y="186" width="6" height="6" rx="0.5" fill="rgba(100,255,218,0.9)"/>
+          <!-- Scanning beam -->
+          <div class="scan-beam" aria-hidden="true"></div>
 
-              <!-- QR center dots pattern -->
-              <rect x="100" y="130" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="106" y="130" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="112" y="130" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="100" y="136" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="106" y="142" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="100" y="148" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="112" y="148" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="100" y="154" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="106" y="160" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="112" y="160" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="100" y="166" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="112" y="136" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="112" y="154" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.5)"/>
-              <rect x="106" y="148" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.3)"/>
-              <rect x="100" y="142" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.3)"/>
-              <rect x="106" y="136" width="4" height="4" rx="0.5" fill="rgba(100,255,218,0.3)"/>
+          <!-- Glow spotlight beneath kiosk -->
+          <div class="kiosk-spotlight" aria-hidden="true"></div>
 
-              <!-- Scan label -->
-              <text x="110" y="222" text-anchor="middle" fill="rgba(100,255,218,0.6)" font-family="DM Sans, sans-serif" font-size="9" letter-spacing="1.5">SCAN TO PRINT</text>
+          <!-- The actual kiosk image -->
+          <div class="kiosk-img-wrap">
+            <img
+              src="assets/images/kiosk-photo.png"
+              alt="OneTapPrint Self-Service Print Kiosk Machine"
+              class="kiosk-main-img"
+              draggable="false"
+            />
+          </div>
 
-              <!-- Screen scan line animation -->
-              <rect x="36" y="82" width="188" height="3" rx="1" fill="url(#scanGrad)" class="kiosk-scan-anim"/>
-
-              <!-- PIN entry area -->
-              <rect x="48" y="232" width="164" height="38" rx="6" fill="#071526"/>
-              <rect x="48" y="232" width="164" height="38" rx="6" stroke="rgba(100,255,218,0.2)" stroke-width="1" fill="none"/>
-              <text x="84" y="255" fill="rgba(255,255,255,0.6)" font-family="DM Sans, sans-serif" font-size="9">Enter PIN</text>
-              <!-- PIN dots -->
-              <circle cx="156" cy="251" r="4" fill="rgba(100,255,218,0.3)"/>
-              <circle cx="168" cy="251" r="4" fill="rgba(100,255,218,0.6)"/>
-              <circle cx="180" cy="251" r="4" fill="rgba(100,255,218,0.3)"/>
-              <circle cx="192" cy="251" r="4" fill="rgba(100,255,218,0.1)"/>
-
-              <!-- Divider -->
-              <line x1="36" y1="282" x2="224" y2="282" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-
-              <!-- Pay button on screen -->
-              <rect x="50" y="290" width="160" height="30" rx="6" fill="url(#btnGrad)"/>
-              <text x="130" y="310" text-anchor="middle" fill="#000" font-family="Syne, sans-serif" font-weight="700" font-size="11">PAY &amp; PRINT NOW</text>
-
-              <!-- Status bar at bottom of screen -->
-              <rect x="36" y="270" width="188" height="10" fill="#020B18"/>
-              <text x="52" y="278" fill="rgba(100,255,218,0.5)" font-family="DM Sans, sans-serif" font-size="7">● ENCRYPTED</text>
-              <text x="175" y="278" fill="rgba(100,255,218,0.5)" font-family="DM Sans, sans-serif" font-size="7">FILE SAFE</text>
-
-              <!-- Keypad -->
-              <rect x="36" y="296" width="188" height="74" rx="6" fill="#071526" opacity="0.5"/>
-              <!-- Keypad buttons 3x3 -->
-              <rect x="46" y="302" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="106" y="302" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="166" y="302" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="46" y="328" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="106" y="328" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="166" y="328" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="46" y="354" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <rect x="106" y="354" width="48" height="18" rx="4" fill="rgba(100,255,218,0.15)" stroke="rgba(100,255,218,0.3)" stroke-width="0.5"/>
-              <rect x="166" y="354" width="48" height="18" rx="4" fill="rgba(255,255,255,0.06)"/>
-              <text x="70" y="315" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">1</text>
-              <text x="130" y="315" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">2</text>
-              <text x="190" y="315" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">3</text>
-              <text x="70" y="341" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">4</text>
-              <text x="130" y="341" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">5</text>
-              <text x="190" y="341" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">6</text>
-              <text x="70" y="367" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">7</text>
-              <text x="130" y="367" text-anchor="middle" fill="rgba(100,255,218,0.8)" font-family="DM Sans, sans-serif" font-weight="700" font-size="9">OK</text>
-              <text x="190" y="367" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="DM Sans, sans-serif" font-size="9">9</text>
-
-              <!-- Paper output slot -->
-              <rect x="36" y="375" width="188" height="8" rx="2" fill="#020B18"/>
-              <line x1="36" y1="379" x2="224" y2="379" stroke="rgba(100,255,218,0.15)" stroke-width="0.5" stroke-dasharray="4 4"/>
-
-              <!-- Defs -->
-              <defs>
-                <linearGradient id="bodyGrad" x1="20" y1="30" x2="240" y2="385" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#0D2137"/>
-                  <stop offset="50%" stop-color="#091B30"/>
-                  <stop offset="100%" stop-color="#050F1E"/>
-                </linearGradient>
-                <linearGradient id="topStrip" x1="20" y1="30" x2="240" y2="68" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#0E3152"/>
-                  <stop offset="100%" stop-color="#0A2340"/>
-                </linearGradient>
-                <linearGradient id="borderGlow" x1="0" y1="0" x2="260" y2="440" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="rgba(100,255,218,0.4)"/>
-                  <stop offset="40%" stop-color="rgba(100,255,218,0.1)"/>
-                  <stop offset="100%" stop-color="rgba(100,255,218,0.3)"/>
-                </linearGradient>
-                <linearGradient id="scanGrad" x1="0" y1="0" x2="188" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="transparent"/>
-                  <stop offset="50%" stop-color="rgba(100,255,218,0.8)"/>
-                  <stop offset="100%" stop-color="transparent"/>
-                </linearGradient>
-                <linearGradient id="btnGrad" x1="50" y1="290" x2="210" y2="320" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#64FFDA"/>
-                  <stop offset="100%" stop-color="#0DFFD0"/>
-                </linearGradient>
-              </defs>
-            </svg>
-
-            <!-- Floating paper output animation -->
-            <div class="paper-output" aria-hidden="true">
-              <div class="paper p1">
-                <div class="paper-lines">
-                  <div></div><div></div><div></div><div></div>
-                </div>
-              </div>
-              <div class="paper p2">
-                <div class="paper-lines">
-                  <div></div><div></div><div></div>
-                </div>
-              </div>
+          <!-- Animated floating badges -->
+          <div class="kiosk-badge badge-tl" aria-hidden="true">
+            <span class="badge-icon">🔒</span>
+            <div>
+              <div class="badge-title">Encrypted</div>
+              <div class="badge-sub">End-to-end secure</div>
             </div>
           </div>
 
-          <!-- Floating badges -->
-          <div class="kiosk-badge badge-qr" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0113.9 18.9a19.5 19.5 0 01-6-6 19.79 19.79 0 01-3-8.67A2 2 0 016.72 2.17h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L10.91 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.01z"/></svg>
-            Scan & Print
+          <div class="kiosk-badge badge-tr" aria-hidden="true">
+            <span class="badge-icon">⚡</span>
+            <div>
+              <div class="badge-title">&lt;60 Seconds</div>
+              <div class="badge-sub">Instant print</div>
+            </div>
           </div>
 
-          <div class="kiosk-badge badge-secure" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7z"/></svg>
-            Encrypted
+          <div class="kiosk-badge badge-bl" aria-hidden="true">
+            <span class="badge-icon">🌙</span>
+            <div>
+              <div class="badge-title">24 / 7</div>
+              <div class="badge-sub">Always open</div>
+            </div>
           </div>
 
-          <div class="kiosk-badge badge-live" aria-hidden="true">
-            <span class="live-dot"></span>
-            Kiosk Online
+          <div class="kiosk-badge badge-br" aria-hidden="true">
+            <span class="badge-icon">🗑️</span>
+            <div>
+              <div class="badge-title">Auto-Delete</div>
+              <div class="badge-sub">Zero data stored</div>
+            </div>
           </div>
+
+          <!-- Orbiting dot particles -->
+          <div class="orbit-dot" style="--angle:0deg; --radius:160px; --dur:8s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:90deg; --radius:160px; --dur:8s; animation-delay:-2s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:180deg; --radius:160px; --dur:8s; animation-delay:-4s;" aria-hidden="true"></div>
+          <div class="orbit-dot" style="--angle:270deg; --radius:160px; --dur:8s; animation-delay:-6s;" aria-hidden="true"></div>
         </div>
       </div>
 
-      <!-- RIGHT: Text content -->
-      <div class="hero-right">
-        <div class="hero-badge reveal">
-          <span class="hbadge-dot"></span>
-          No App · No Login · No Queue
-        </div>
+      <!-- Feature list -->
+      <div class="features-right">
 
-        <h1 id="hero-heading" class="hero-title reveal delay-1">
-          Your Docs.<br/>Printed in<br/><em class="title-em">One Tap.</em>
-        </h1>
-
-        <p class="hero-tagline reveal delay-2">Because time and privacy matter.</p>
-
-        <p class="hero-intro reveal delay-2">
-          Walk up to our kiosk, scan the QR, upload your file, pay, and collect. Done in under 60 seconds. Your file is permanently deleted the moment printing completes.
-        </p>
-
-        <div class="hero-options reveal delay-3">
-          <a href="#how-it-works" class="btn btn-glow btn-lg">
-            Start Printing →
-          </a>
-          <a href="#location" class="btn btn-outline btn-lg">Find Kiosk</a>
-        </div>
-
-        <div class="hero-stats reveal delay-4">
-          <div class="hstat">
-            <span class="hstat-num" data-target="60">0</span><span class="hstat-unit">s</span>
-            <span class="hstat-label">Print Time</span>
-          </div>
-          <div class="hstat-sep"></div>
-          <div class="hstat">
-            <span class="hstat-num" data-target="100">0</span><span class="hstat-unit">%</span>
-            <span class="hstat-label">File Deleted</span>
-          </div>
-          <div class="hstat-sep"></div>
-          <div class="hstat">
-            <span class="hstat-num" data-target="24">0</span><span class="hstat-unit">/7</span>
-            <span class="hstat-label">Always Open</span>
+        <div class="feature-item reveal" data-delay="0">
+          <div class="feature-icon">🔐</div>
+          <div class="feature-text">
+            <h3>Documents Are Completely Safe</h3>
+            <p>Files are securely encrypted during transfer. Never shared, never stored — automatically deleted right after printing.</p>
           </div>
         </div>
+
+        <div class="feature-item reveal" data-delay="100">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-text">
+            <h3>Print in Under 60 Seconds</h3>
+            <p>From scanning the QR code to collecting your printout — the entire process is lightning-fast and seamless.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal" data-delay="200">
+          <div class="feature-icon">🌙</div>
+          <div class="feature-text">
+            <h3>Always Available — 24/7</h3>
+            <p>Print even when all shops are shut — early mornings, late nights, weekends and public holidays. We never close.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal" data-delay="300">
+          <div class="feature-icon">🤳</div>
+          <div class="feature-text">
+            <h3>100% Contactless &amp; Hassle-Free</h3>
+            <p>No touching shared devices, no pen drives, no staff required. Just scan, upload, and print from your own phone.</p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal" data-delay="400">
+          <div class="feature-icon">🎓</div>
+          <div class="feature-text">
+            <h3>Perfect for Students &amp; Professionals</h3>
+            <p>Last-minute assignment? Boarding pass? ID proof? SwiftPrint has your back wherever our kiosk is installed.</p>
+          </div>
+        </div>
+
       </div>
-    </div>
-
-    <div class="scroll-hint" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-hint-line"></div>
-    </div>
-  </section>
-
-  <!-- ═══ TICKER ═══ -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>⚡ Under 60 Seconds</span>
-      <span>🔒 256-bit Encrypted</span>
-      <span>🗑️ Auto File Deletion</span>
-      <span>📄 PDF · DOCX · JPG · PNG</span>
-      <span>🕐 Open 24/7</span>
-      <span>📱 QR Scan & Print</span>
-      <span>💳 UPI · Cash · Card</span>
     </div>
   </div>
+</section>
 
-  <!-- ═══ HOW IT WORKS ═══ -->
-  <section id="how-it-works" aria-labelledby="steps-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-pill">Process</div>
-        <h2 id="steps-heading">How It <span class="text-cyan">Works</span></h2>
-        <p>Three steps. That's literally it.</p>
-      </div>
-
-      <div class="steps-grid">
-        <div class="step-card reveal delay-1">
-          <div class="step-num">01</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><rect x="6" y="28" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><rect x="28" y="6" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><rect x="31" y="31" width="8" height="8" rx="1.5" fill="currentColor" opacity=".6"/><path d="M28 28h7v5M35 42h5v2M42 35v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Scan QR &amp; Send File</h3>
-          <p>Open your camera, scan the QR code on the kiosk. Upload your file via the secure link — PDF, DOCX, JPG, all supported. Get your unique PIN instantly.</p>
-          <div class="step-tag">~10 sec</div>
-        </div>
-
-        <div class="step-card reveal delay-2">
-          <div class="step-num">02</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="10" width="32" height="28" rx="4" stroke="currentColor" stroke-width="2"/><path d="M8 20h32" stroke="currentColor" stroke-width="1.5" opacity=".4"/><circle cx="17" cy="30" r="3" stroke="currentColor" stroke-width="2"/><circle cx="31" cy="30" r="3" stroke="currentColor" stroke-width="2"/><path d="M20 30h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M15 16h18M15 24h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
-          </div>
-          <h3>Enter PIN &amp; Customise</h3>
-          <p>Type your PIN at the kiosk screen. Choose copies, colour vs B&amp;W, single or double-sided, paper size. The kiosk is ready in seconds.</p>
-          <div class="step-tag">~15 sec</div>
-        </div>
-
-        <div class="step-card reveal delay-3">
-          <div class="step-num">03</div>
-          <div class="step-icon">
-            <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="18" width="32" height="20" rx="3" stroke="currentColor" stroke-width="2"/><path d="M16 18V12a2 2 0 012-2h12a2 2 0 012 2v6" stroke="currentColor" stroke-width="2"/><rect x="16" y="28" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="26" r="2.5" fill="currentColor" opacity=".6"/></svg>
-          </div>
-          <h3>Pay &amp; Collect</h3>
-          <p>Scan the UPI QR or tap your card. Your pages come out instantly. The moment printing is done — your file is permanently deleted. Zero trace.</p>
-          <div class="step-tag">~30 sec</div>
-        </div>
-      </div>
+<!-- ── COMPARISON ─────────────────────────────────────────── -->
+<section id="comparison" aria-labelledby="compare-title">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label" style="justify-content:center;">The Difference</p>
+      <h2 class="section-title" id="compare-title">SwiftPrint vs. Traditional Shops</h2>
+      <p class="section-sub" style="margin: 0 auto;">See why self-service printing is the smarter choice.</p>
     </div>
-  </section>
 
-  <!-- ═══ FEATURES ═══ -->
-  <section id="features" class="features-section" aria-labelledby="features-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-pill">Why Us</div>
-        <h2 id="features-heading">Built for people who value <span class="text-cyan">speed</span></h2>
-        <p>Every decision made to make printing feel effortless and completely trustworthy.</p>
+    <div class="compare-wrap reveal" data-delay="150">
+
+      <div class="compare-col bad">
+        <div class="compare-header">❌ Traditional Print Shops</div>
+        <div class="compare-row"><span class="compare-icon-bad">✕</span> Limited operating hours</div>
+        <div class="compare-row"><span class="compare-icon-bad">✕</span> Long queues &amp; delayed service</div>
+        <div class="compare-row"><span class="compare-icon-bad">✕</span> Files visible to shop staff</div>
+        <div class="compare-row"><span class="compare-icon-bad">✕</span> Staff often downloads your file</div>
+        <div class="compare-row"><span class="compare-icon-bad">✕</span> Requires human interaction</div>
+        <div class="compare-row"><span class="compare-icon-bad">✕</span> Pen drives &amp; shared devices</div>
       </div>
 
-      <div class="features-grid">
-        <div class="feat-card feat-large reveal delay-1">
-          <div class="feat-icon">
-            <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="2"/><path d="M20 12v8l5 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Under 60 Seconds</h3>
-          <p>From scan to collection in under a minute — every time. No waiting, no queues, no staff needed.</p>
-          <div class="feat-glow"></div>
-        </div>
-
-        <div class="feat-card reveal delay-2">
-          <div class="feat-icon">
-            <svg viewBox="0 0 40 40" fill="none"><path d="M20 4l14 5.6v8.4c0 7.7-5.6 14.7-14 17-8.4-2.3-14-9.3-14-17V9.6z" stroke="currentColor" stroke-width="2"/><path d="M14 20l4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3>Zero-Trace Privacy</h3>
-          <p>Files auto-deleted immediately after printing. End-to-end encrypted. No logs, ever.</p>
-        </div>
-
-        <div class="feat-card reveal delay-3">
-          <div class="feat-icon">
-            <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="2"/><path d="M20 10v10l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h3>24 / 7 Always On</h3>
-          <p>No closing time, no holidays, no staff needed. The kiosk is always running.</p>
-        </div>
-
-        <div class="feat-card reveal delay-2">
-          <div class="feat-icon">
-            <svg viewBox="0 0 40 40" fill="none"><rect x="4" y="10" width="32" height="22" rx="4" stroke="currentColor" stroke-width="2"/><path d="M12 10V8a2 2 0 012-2h12a2 2 0 012 2v2" stroke="currentColor" stroke-width="2"/><path d="M12 21h16M12 26h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h3>All Formats</h3>
-          <p>PDF, DOCX, XLSX, JPG, PNG. Black & white or colour. A4 or Letter. You decide.</p>
-        </div>
-
-        <div class="feat-card feat-dark reveal delay-3">
-          <div class="feat-icon">
-            <svg viewBox="0 0 40 40" fill="none"><rect x="6" y="8" width="28" height="24" rx="4" stroke="currentColor" stroke-width="2"/><path d="M13 16h14M13 22h8M13 28h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Instant Receipt</h3>
-          <p>Digital receipt sent to your phone after every print. Clear, itemised, shareable.</p>
-          <div class="feat-glow feat-glow-cyan"></div>
-        </div>
+      <div class="compare-col good">
+        <div class="compare-header">✅ SwiftPrint Kiosk</div>
+        <div class="compare-row"><span class="compare-icon-good">✓</span> 24/7 access — always open</div>
+        <div class="compare-row"><span class="compare-icon-good">✓</span> Instant print in under 60 sec</div>
+        <div class="compare-row"><span class="compare-icon-good">✓</span> Private, encrypted &amp; auto-deleted</div>
+        <div class="compare-row"><span class="compare-icon-good">✓</span> No one ever sees your file</div>
+        <div class="compare-row"><span class="compare-icon-good">✓</span> Zero human interaction needed</div>
+        <div class="compare-row"><span class="compare-icon-good">✓</span> Just your phone — nothing else</div>
       </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ═══ LOCATION ═══ -->
-  <section id="location" aria-labelledby="location-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-pill">Find Us</div>
-        <h2 id="location-heading">Visit the <span class="text-cyan">Kiosk</span></h2>
-        <p>Walk in anytime. No appointment, no staff needed.</p>
-      </div>
+<!-- ── KIOSK LOCATION ─────────────────────────────────────── -->
+<section id="location" aria-labelledby="location-title">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Find Us</p>
+      <h2 class="section-title" id="location-title">Kiosk Location</h2>
+      <p class="section-sub">Walk in anytime. No appointment, no waiting — just scan and print.</p>
+    </div>
 
-      <div class="location-box reveal delay-1">
-        <div class="loc-details">
-          <div class="loc-online-badge">
-            <span class="live-dot"></span> Kiosk Online
-          </div>
-          <h3 id="conf-loc-title">Tech Hub Building</h3>
+    <div class="location-layout">
 
-          <div class="loc-info-row">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span id="conf-loc-address">Ground Floor, MG Road, Raipur, CG – 492001</span>
-          </div>
+      <!-- Left: photo + info -->
+      <div class="location-info">
 
-          <div class="loc-info-row">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span id="conf-loc-hours">Open 24/7</span>
-          </div>
-
-          <div class="loc-actions">
-            <a id="conf-loc-btn" href="https://maps.google.com/maps?q=21.2514,81.6296" target="_blank" rel="noopener" class="btn btn-glow">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Open in Maps
-            </a>
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="btn btn-outline">WhatsApp Us</a>
-          </div>
-        </div>
-
-        <div class="loc-map">
-          <iframe id="conf-loc-map"
-            src="https://maps.google.com/maps?q=21.2514,81.6296&z=17&output=embed"
-            title="One Tap Print Kiosk Location"
+        <!-- Kiosk photo -->
+        <div class="kiosk-photo-wrap reveal" data-delay="0" style="background: radial-gradient(circle at 50% 80%, rgba(0,87,255,0.15), transparent 70%), var(--bg-card); display:flex; align-items:center; justify-content:center; padding: 1.5rem;">
+          <img
+            src="assets/images/kiosk-photo.png"
+            alt="OneTapPrint Kiosk Machine at our location"
             loading="lazy"
+            style="width:100%; height:100%; object-fit:contain; object-position:center; filter: drop-shadow(0 20px 60px rgba(0,87,255,0.4)) drop-shadow(0 0 30px rgba(0,212,255,0.2)); animation: kiosk-loc-float 4s ease-in-out infinite;"
+          />
+        </div>
+
+        <!-- Location details card -->
+        <div class="location-details reveal" data-delay="100">
+          <div class="loc-row">
+            <span class="loc-row-icon">📍</span>
+            <div class="loc-row-text">
+              <strong>Address</strong>
+              <!-- Update this in config/contact.config.js → contact.address -->
+              Ground Floor, Tech Hub Building, MG Road,<br>Raipur, Chhattisgarh – 492001
+            </div>
+          </div>
+          <div class="loc-row">
+            <span class="loc-row-icon">🕐</span>
+            <div class="loc-row-text">
+              <strong>Operating Hours</strong>
+              24 Hours / 7 Days — Always Open
+            </div>
+          </div>
+          <div class="loc-row">
+            <span class="loc-row-icon">📞</span>
+            <div class="loc-row-text">
+              <strong>Helpline</strong>
+              <!-- Update phone in config/contact.config.js -->
+              <a href="tel:+919876543210" style="color:var(--blue-bright); text-decoration:none;">+91 98765 43210</a>
+            </div>
+          </div>
+          <div class="loc-row">
+            <span class="loc-row-icon">💬</span>
+            <div class="loc-row-text">
+              <strong>WhatsApp Support</strong>
+              <a href="https://wa.me/919876543210" target="_blank" rel="noopener" style="color:var(--accent-green); text-decoration:none;">Message us on WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: map embed -->
+      <div class="reveal" data-delay="200">
+        <div class="map-wrap">
+          <!--
+            ── MAP LOCATION ─────────────────────────────────
+            To update kiosk location:
+            1. Open config/contact.config.js
+            2. Edit kiosk.latitude and kiosk.longitude
+            3. Update the src URL below with your coordinates:
+               Format: https://maps.google.com/maps?q=LAT,LNG&z=17&output=embed
+            ─────────────────────────────────────────────────
+          -->
+          <iframe
+            src="https://maps.google.com/maps?q=21.2514,81.6296&z=17&output=embed"
             allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-          <div class="map-shine" aria-hidden="true"></div>
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="SwiftPrint Kiosk Location on Google Maps"
+          ></iframe>
+          <div class="map-overlay-label">
+            <span>🖨️</span> SwiftPrint Kiosk
+          </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ═══ CONTACT ═══ -->
-  <section id="contact" aria-labelledby="contact-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-pill">Get In Touch</div>
-        <h2 id="contact-heading">Have a <span class="text-cyan">question?</span></h2>
-        <p>We respond within a few hours, every day of the week.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────────── -->
+<section id="contact" aria-labelledby="contact-title">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label" style="justify-content:center;">Get In Touch</p>
+      <h2 class="section-title" id="contact-title">We'd Love to Hear from You</h2>
+      <p class="section-sub" style="margin:0 auto;">Questions, partnership inquiries, or feedback — we reply within 24 hours.</p>
+    </div>
+
+    <div class="contact-grid" style="margin-top:3rem;">
+
+      <!-- Contact form -->
+      <div class="reveal" data-delay="0">
+        <div class="contact-form">
+          <form id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" placeholder="you@email.com" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" />
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" name="subject">
+                  <option value="">Select topic</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                  <option value="Technical Support">Technical Support</option>
+                  <option value="Partnership / Franchise">Partnership / Franchise</option>
+                  <option value="Kiosk Installation">Kiosk Installation Request</option>
+                  <option value="Feedback">Feedback</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" placeholder="Tell us what you need..." required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">
+              <span>✉️</span> Send Message
+            </button>
+          </form>
+          <div id="form-success" class="form-success">
+            ✅ Message sent! We'll be in touch within 24 hours.
+          </div>
+        </div>
       </div>
 
-      <div class="contact-grid">
-        <div class="contact-info reveal delay-1">
-          <a id="conf-email-card" href="mailto:hello@onetapprint.in" class="contact-card cc-hover">
-            <div class="cc-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
+      <!-- Contact info -->
+      <div class="contact-info reveal" data-delay="150">
+
+        <div class="contact-card">
+          <div class="cc-title">Direct Contact</div>
+          <!-- Update these in config/contact.config.js -->
+          <a href="mailto:hello@swiftprint.in" class="cc-item">
+            <div class="cc-icon">📧</div>
+            hello@swiftprint.in
+          </a>
+          <a href="mailto:support@swiftprint.in" class="cc-item">
+            <div class="cc-icon">🛠️</div>
+            support@swiftprint.in
+          </a>
+          <a href="tel:+919876543210" class="cc-item">
+            <div class="cc-icon">📞</div>
+            +91 98765 43210
+          </a>
+          <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="cc-item">
+            <div class="cc-icon">💬</div>
+            WhatsApp Us
+          </a>
+        </div>
+
+        <div class="contact-card">
+          <div class="cc-title">Follow Us</div>
+          <!-- Update social URLs in config/contact.config.js -->
+          <div class="social-row">
+            <a href="https://instagram.com/swiftprint.in" target="_blank" rel="noopener" class="social-pill">
+              📸 Instagram
+            </a>
+            <a href="https://twitter.com/swiftprintin" target="_blank" rel="noopener" class="social-pill">
+              🐦 Twitter / X
+            </a>
+            <a href="https://linkedin.com/company/swiftprint" target="_blank" rel="noopener" class="social-pill">
+              💼 LinkedIn
+            </a>
+            <a href="https://youtube.com/@swiftprint" target="_blank" rel="noopener" class="social-pill">
+              ▶️ YouTube
+            </a>
+            <a href="https://facebook.com/swiftprintin" target="_blank" rel="noopener" class="social-pill">
+              👤 Facebook
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="cc-title">Kiosk Location</div>
+          <div class="cc-item" style="color: var(--white-60);">
+            <div class="cc-icon">📍</div>
             <div>
-              <h4>Email Support</h4>
-              <p id="conf-email">hello@onetapprint.in</p>
-            </div>
-            <svg class="cc-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-          </a>
-
-          <a id="conf-phone-card" href="https://wa.me/919876543210" target="_blank" rel="noopener" class="contact-card cc-hover">
-            <div class="cc-icon cc-icon-green">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </div>
-            <div>
-              <h4>WhatsApp Helpline</h4>
-              <p id="conf-phone">+91 98765 43210</p>
-            </div>
-            <svg class="cc-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-          </a>
-
-          <div class="contact-card social-card">
-            <h4>Follow Us</h4>
-            <div class="social-links">
-              <a id="conf-insta" href="https://instagram.com/onetapprint" target="_blank" rel="noopener" class="social-pill">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                Instagram
-              </a>
-              <a id="conf-twit" href="https://twitter.com/onetapprint" target="_blank" rel="noopener" class="social-pill">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                Twitter/X
-              </a>
-              <a id="conf-link" href="https://linkedin.com/company/onetapprint" target="_blank" rel="noopener" class="social-pill">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                LinkedIn
-              </a>
+              Ground Floor, Tech Hub Building,<br>
+              MG Road, Raipur, CG — 492001<br>
+              <small style="color: var(--accent-green);">Open 24/7</small>
             </div>
           </div>
         </div>
 
-        <form id="contact-form" class="contact-form reveal delay-2" novalidate>
-          <div class="form-row">
-            <div class="form-field">
-              <label for="fname">Your Name</label>
-              <input type="text" id="fname" name="name" placeholder="Rahul Sharma" autocomplete="name" required />
-            </div>
-            <div class="form-field">
-              <label for="femail">Email Address</label>
-              <input type="email" id="femail" name="email" placeholder="rahul@example.com" autocomplete="email" required />
-            </div>
-          </div>
-          <div class="form-field">
-            <label for="fmsg">Message</label>
-            <textarea id="fmsg" name="message" rows="4" placeholder="How can we help you?" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-glow">
-            Send Message
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </form>
-
-        <div id="form-success" class="form-success" hidden aria-live="polite">
-          <div class="success-ring" aria-hidden="true">
-            <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" stroke="rgba(100,255,218,0.3)" stroke-width="2"/><path d="M18 30l8 8 16-16" stroke="#64FFDA" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3>Message sent!</h3>
-          <p>We'll get back to you within a few hours.</p>
-        </div>
       </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="#" class="nav-logo">
-            <span class="logo-mark">
-              <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#64FFDA" stroke-width="2"/><circle cx="11" cy="11" r="4" fill="#64FFDA"/></svg>
-            </span>
-            One<span class="logo-accent">Tap</span>Print
-          </a>
-          <p>Fast. Private. Always On.</p>
-        </div>
-        <div class="footer-links">
-          <div class="fcol">
-            <div class="fcol-title">Navigate</div>
-            <ul><li><a href="#how-it-works">How It Works</a></li><li><a href="#features">Features</a></li><li><a href="#location">Location</a></li><li><a href="#contact">Contact</a></li></ul>
-          </div>
-          <div class="fcol">
-            <div class="fcol-title">Contact</div>
-            <ul><li><a href="mailto:hello@onetapprint.in">hello@onetapprint.in</a></li><li><a href="https://wa.me/919876543210">WhatsApp</a></li></ul>
-          </div>
-        </div>
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+
+    <div>
+      <div class="footer-brand-name">
+        Swift<span class="accent">Print</span>
       </div>
-      <div class="footer-bottom">
-        <p>© <span id="year"></span> One Tap Print. All rights reserved.</p>
-        <p class="footer-note">Files permanently deleted after every print.</p>
-      </div>
+      <p class="footer-tagline-sm">FAST &amp; SECURE PRINT</p>
+      <p class="footer-desc">Because time and privacy matter. Self-service, contactless, encrypted print kiosk — available 24 hours a day, 7 days a week.</p>
     </div>
-  </footer>
 
-  <script src="config.js"></script>
-  <script src="main.js"></script>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#why-us">Why Us</a>
+      <a href="#comparison">vs. Traditional</a>
+      <a href="#location">Find the Kiosk</a>
+      <a href="#contact">Contact Us</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="https://instagram.com/swiftprint.in" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://twitter.com/swiftprintin" target="_blank" rel="noopener">Twitter / X</a>
+      <a href="https://linkedin.com/company/swiftprint" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://youtube.com/@swiftprint" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://facebook.com/swiftprintin" target="_blank" rel="noopener">Facebook</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 SwiftPrint. All rights reserved.</span>
+    <span class="footer-tagline-sm">Because time and privacy matter.</span>
+    <span>Raipur, Chhattisgarh, India</span>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────── -->
+<script src="js/main.js" defer></script>
+
 </body>
 </html>
