@@ -12,24 +12,23 @@ const SITE_CONFIG = {
     name:        "OneTapPrint",
     nameMain:    "OneTap",
     nameAccent:  "Print",
-    tagline:     "Fast & Secure Print",
-    subTagline:  "Because Time & Privacy Matter",
-    year:        "2025",
-    domain:      "www.onetapprint.in",
+    Tagline:  "Because Time & Privacy Matter",
+    year:        "2026",
+    domain:      "www.onetapprint.com",
   },
 
   // ── KIOSK LOCATION ─────────────────────────────────────────
   location: {
     title:       "UIET Building",
-    address:     "Ground Floor, UIET Building, MG Road, Raipur, Chhattisgarh – 492001",
+    address:     "Ground Floor, UIET AB Building,CSJMU, Kanpur ,  – 208024",
     hours:       "Open 24 / 7",
     mapEmbedUrl: "https://maps.google.com/maps?q=21.2514,81.6296&z=17&output=embed",
   },
 
   // ── CONTACT DETAILS ────────────────────────────────────────
   contact: {
-    email:        "hello@onetapprint.in",
-    emailSupport: "support@onetapprint.in",
+    email:        "hello@onetapprint.com",
+    emailSupport: "support@onetapprint.com",
     phone:        "+91 98765 43210",
     whatsappLink: "https://wa.me/919876543210",
   },
@@ -39,7 +38,7 @@ const SITE_CONFIG = {
     instagram: "https://instagram.com/onetapprint",
     twitter:   "https://twitter.com/onetapprint",
     linkedin:  "https://linkedin.com/company/onetapprint",
-    youtube:   "",
+    youtube:   ".https://youtube.com/@onetapprint?si=ClMY6iJEg8WSgJh3",
     facebook:  "",
   },
 };
